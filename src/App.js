@@ -1,8 +1,13 @@
 import logo from "./logo.svg";
 import "./App.css";
+import Login from "../src/pages/login";
 
 function App() {
-  return <h1 className="text-4xl text-red-500 ">Tes</h1>;
+  return (
+    <div>
+      <Login />
+    </div>
+  );
 }
 
 export default App;
