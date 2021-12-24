@@ -17,7 +17,12 @@ export default function Layout({ children }) {
       >
         {/* icon casier */}
         <div className="flex items-center justify-center mt-9">
-          <NavLink to={"/list_product"}>
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "text-violet-purple" : "text-gray-400"
+            }
+            to={"/list_product"}
+          >
             <IconCasier />
           </NavLink>
         </div>
@@ -27,35 +32,60 @@ export default function Layout({ children }) {
           <ul className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <li>
               <div>
-                <NavLink to={"/dashboard"}>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "text-violet-purple" : "text-gray-400"
+                  }
+                  to={"/dashboard"}
+                >
                   <IconDashbaord />
                 </NavLink>
               </div>
             </li>
             <li className="mt-7">
               <div>
-                <NavLink to={"/list_product"}>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "text-violet-purple" : "text-gray-400"
+                  }
+                  to={"/list_product"}
+                >
                   <IconListProduct />
                 </NavLink>
               </div>
             </li>
             <li className="mt-7">
               <div>
-                <NavLink to={"/book_management"}>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "text-violet-purple" : "text-gray-400"
+                  }
+                  to={"/book_management"}
+                >
                   <IconBookManagement />
                 </NavLink>
               </div>
             </li>
             <li className="mt-7">
               <div>
-                <NavLink to={"/category"}>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "text-violet-purple" : "text-gray-400"
+                  }
+                  to={"/category"}
+                >
                   <IconCategory />
                 </NavLink>
               </div>
             </li>
             <li className="mt-7">
               <div>
-                <NavLink to={"/transaksi"}>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "text-violet-purple" : "text-gray-400"
+                  }
+                  to={"/transaksi"}
+                >
                   <IconTransaksi />
                 </NavLink>
               </div>

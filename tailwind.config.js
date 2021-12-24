@@ -15,9 +15,15 @@ module.exports = {
       },
       minWidth: {
         "466px": "466px",
+        "110px": "110px",
       },
       width: {
         "466px": "466px",
+        "110px": "110px",
+      },
+      height: {
+        "69vh": "69vh",
+        "110px": "110px",
       },
     },
   },
