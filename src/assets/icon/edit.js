@@ -1,8 +1,9 @@
 import React from "react";
 
-export default function Edit({ className }) {
+export default function Edit({ className, onClick }) {
   return (
     <svg
+      onClick={onClick}
       className={className}
       width="19"
       height="19"

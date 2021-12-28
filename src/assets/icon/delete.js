@@ -1,8 +1,9 @@
 import React from "react";
 
-export default function Delete({ className, stroke }) {
+export default function Delete({ className, stroke, onClick }) {
   return (
     <svg
+      onClick={onClick}
       className={className}
       width="19"
       height="19"

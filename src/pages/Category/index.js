@@ -5,21 +5,37 @@ import IconEdit from "../../assets/icon/edit";
 import ImgCategory from "../../assets/img/empty_Category.png";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCategory } from "../../features/category/actions";
+import {
+  createCategory,
+  fetchCategory,
+  getSingleCategory,
+  removeCategory,
+  updateCategory,
+} from "../../features/category/actions";
+import NotifSukses from "../../components/notifSukses";
+import NotifDelete from "../../components/notifDelete";
+import { CLEAR_STATUS } from "../../features/category/constants";
 export default function Category() {
+  const [notif, setNotif] = useState({
+    sukses: false,
+    delete: false,
+  });
+  const [categoryData, setCategoryData] = useState({
+    name: "",
+    id: "",
+  });
+  const [statusUpdate, setStatusUpdate] = useState(false);
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
-  console.log("categories render pages", categories);
   const [form, setForm] = useState({
     name: "",
   });
-
-  // console.log("form", form);
   const {
     register,
     handleSubmit,
     watch,
     clearErrors,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -29,16 +45,78 @@ export default function Category() {
     setForm({ ...form, [name]: value });
   };
 
+  const handleDelete = (name, id) => {
+    setCategoryData({ ...categoryData, name: name, id: id });
+    setNotif({ ...notif, delete: true });
+  };
+
+  const handleDeleteApi = () => {
+    dispatch(removeCategory(categoryData.id));
+    setNotif({ ...notif, delete: false });
+  };
+
+  const handleEdit = (id) => {
+    setStatusUpdate(true);
+    dispatch(getSingleCategory(id));
+  };
+
   const onSubmit = () => {
-    // alert("berhasil login");
-    // console.log("form", form);
+    if (statusUpdate) {
+      dispatch(updateCategory(categories.dataSingle.id, form));
+      dispatch({
+        type: CLEAR_STATUS,
+      });
+    } else {
+      dispatch(createCategory(form));
+      setForm({ ...form, name: "" });
+    }
+    reset();
   };
 
   useEffect(() => {
     dispatch(fetchCategory());
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (categories.statusPost === "success") {
+      dispatch(fetchCategory());
+      setNotif({ ...notif, sukses: true });
+      setTimeout(() => {
+        setNotif({ ...notif, sukses: false });
+        dispatch({
+          type: CLEAR_STATUS,
+        });
+      }, 5000);
+    }
+    if (categories.statusDelete === "success") {
+      dispatch(fetchCategory());
+    }
+    if (categories.statusUpdate === "success") {
+      dispatch(fetchCategory());
+      setForm({ ...form, name: "" });
+      setStatusUpdate(false);
+      dispatch({
+        type: CLEAR_STATUS,
+      });
+    }
+    if (categories.statusGetSingle === "success") {
+      setForm({ ...form, name: categories.dataSingle.name });
+    }
+  }, [
+    categories.statusPost,
+    categories.statusDelete,
+    categories.statusGetSingle,
+    categories.statusUpdate,
+  ]);
   return (
     <div>
+      <NotifSukses name={categories?.dataPost?.name} show={notif.sukses} />
+      <NotifDelete
+        name={categoryData.name}
+        show={notif.delete}
+        closeClick={() => setNotif({ ...form, delete: false })}
+        onClick={() => handleDeleteApi()}
+      />
       <div className="ml-32 grid grid-cols-5">
         <div className="col-span-5 2xl:col-span-3">
           <div className="h-full 2xl:h-screen pt-9 overflow-scroll">
@@ -68,20 +146,38 @@ export default function Category() {
               </div>
               {/* list category */}
               <ul className="mt-8">
-                <li>
-                  <div className="shadow-1xl flex items-center justify-between py-4 px-6 rounded-lg">
-                    <p className="font-base">Novel</p>
-                    <div className="flex items-center">
-                      <IconDelete
-                        className="cursor-pointer mr-7"
-                        stroke="#FF0000"
-                      />
-                      <IconEdit className="cursor-pointer" />
-
-                      {/* icon */}
-                    </div>
-                  </div>
-                </li>
+                {categories.status === "idle"
+                  ? "idle"
+                  : categories.status === "process"
+                  ? "process"
+                  : categories.status === "success"
+                  ? categories.data.map((items, index) => {
+                      return (
+                        <li
+                          key={index}
+                          className={`${index === 0 ? "" : "mt-4"}`}
+                        >
+                          <div className="shadow-1xl flex items-center justify-between py-4 px-6 rounded-lg">
+                            <p className="font-base">{items.name}</p>
+                            <div className="flex items-center">
+                              <IconDelete
+                                className="cursor-pointer mr-7"
+                                stroke="#FF0000"
+                                onClick={() =>
+                                  handleDelete(items.name, items.id)
+                                }
+                              />
+                              <IconEdit
+                                onClick={() => handleEdit(items.id)}
+                                className="cursor-pointer"
+                              />
+                              {/* icon */}
+                            </div>
+                          </div>
+                        </li>
+                      );
+                    })
+                  : "error"}
               </ul>
             </div>
           </div>
