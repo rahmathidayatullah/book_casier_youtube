@@ -8,6 +8,8 @@ import Dashboard from "./pages/Dashboard";
 import ManagementProduct from "./pages/ManagementProduct";
 import Layout from "./components/Layout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./app/store";
 function App() {
   const routes = [
     {
@@ -32,24 +34,26 @@ function App() {
     },
   ];
   return (
-    <div>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-        </Routes>
-
-        {/* <Login /> */}
-        <Layout>
+    <Provider store={store}>
+      <div>
+        <Router>
           <Routes>
-            {routes &&
-              routes.map((route, i) => {
-                const { path, Component } = route;
-                return <Route key={i} path={path} element={<Component />} />;
-              })}
+            <Route path="/" element={<Login />} />
           </Routes>
-        </Layout>
-      </Router>
-    </div>
+
+          {/* <Login /> */}
+          <Layout>
+            <Routes>
+              {routes &&
+                routes.map((route, i) => {
+                  const { path, Component } = route;
+                  return <Route key={i} path={path} element={<Component />} />;
+                })}
+            </Routes>
+          </Layout>
+        </Router>
+      </div>
+    </Provider>
   );
 }
 

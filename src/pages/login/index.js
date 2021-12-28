@@ -81,11 +81,11 @@ export default function Index() {
                   </p>
                 )}
                 <button
-                  disabled={
-                    Object.values(form).every((value) => value !== "")
-                      ? false
-                      : true
-                  }
+                  // disabled={
+                  //   Object.values(form).every((value) => value !== "")
+                  //     ? false
+                  //     : true
+                  // }
                   type="submit"
                   className={`py-4 px-6 text-base font-bold rounded-lg shadow-1xl text-white mt-12 ${
                     Object.values(form).every((value) => value !== "")

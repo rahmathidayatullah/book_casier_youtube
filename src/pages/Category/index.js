@@ -1,9 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import IconSearch from "../../assets/icon/search";
 import IconDelete from "../../assets/icon/delete";
 import IconEdit from "../../assets/icon/edit";
 import ImgCategory from "../../assets/img/empty_Category.png";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategory } from "../../features/category/actions";
 export default function Category() {
+  const dispatch = useDispatch();
+  const categories = useSelector((state) => state.categories);
+  console.log("categories render pages", categories);
+  const [form, setForm] = useState({
+    name: "",
+  });
+
+  // console.log("form", form);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    clearErrors,
+    formState: { errors },
+  } = useForm();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    clearErrors(name);
+    setForm({ ...form, [name]: value });
+  };
+
+  const onSubmit = () => {
+    // alert("berhasil login");
+    // console.log("form", form);
+  };
+
+  useEffect(() => {
+    dispatch(fetchCategory());
+  }, []);
   return (
     <div>
       <div className="ml-32 grid grid-cols-5">
@@ -58,34 +91,54 @@ export default function Category() {
             <h2 className="font-bold">
               Codeathome <span className="font-normal">BookStore</span>
             </h2>
-            {/* start ketika data kosong */}
-            <div
-              className={`flex border h-full 2xl:h-69vh overflow-scroll mt-10`}
-            >
-              {/* <div
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {/* start ketika data kosong */}
+              <div
+                className={`flex border h-full 2xl:h-69vh overflow-scroll mt-10`}
+              >
+                {/* <div
               className={`flex items-center justify-center border h-69vh overflow-scroll mt-10`}
             > */}
-              {/* img empty cart */}
-              {/* <img src={ImgEmptyCart} alt="img-empty-cart" /> */}
-              <ul className="w-full">
-                <li className="mt-5">
-                  <input
-                    type="text"
-                    placeholder="Category name"
-                    className="py-4 px-6 text-base rounded-lg shadow-1xl focus:outline-none w-full"
-                  />
-                </li>
-              </ul>
-            </div>
-            {/* end ketika data kosong */}
+                {/* img empty cart */}
+                {/* <img src={ImgEmptyCart} alt="img-empty-cart" /> */}
+                <ul className="w-full">
+                  <li className="mt-5">
+                    <input
+                      {...register("name", {
+                        required: "category tidak boleh kosong",
+                      })}
+                      onChange={handleChange}
+                      type="text"
+                      name="name"
+                      value={form.name}
+                      placeholder="Category name"
+                      className="py-4 px-6 text-base rounded-lg shadow-1xl focus:outline-none w-full"
+                    />
+                    {errors.name && (
+                      <p className="mt-2 text-red-dragon">
+                        {errors.name.message}
+                      </p>
+                    )}
+                  </li>
+                </ul>
+              </div>
+              {/* end ketika data kosong */}
 
-            {/* btn action */}
+              {/* btn action */}
 
-            <div className="static 2xl:absolute bottom-0 w-full">
-              <button className="flex items-center justify-center mt-4 bg-soft-purple p-5 text-white w-full rounded-xl">
-                <p className="font-bold">Submit</p>
-              </button>
-            </div>
+              <div className="static 2xl:absolute bottom-0 w-full">
+                <button
+                  type="submit"
+                  className={`flex items-center justify-center mt-4 bg-soft-purple p-5 text-white w-full rounded-xl ${
+                    !form.name
+                      ? "bg-soft-purple cursor-not-allowed"
+                      : "bg-violet-purple"
+                  }`}
+                >
+                  <p className="font-bold">Submit</p>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
