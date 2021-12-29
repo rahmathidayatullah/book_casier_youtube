@@ -119,7 +119,7 @@ export default function Category() {
       />
       <div className="ml-32 grid grid-cols-5">
         <div className="col-span-5 2xl:col-span-3">
-          <div className="h-full 2xl:h-screen pt-9 overflow-scroll">
+          <div className="h-full 2xl:h-screen pt-9 overflow-scroll px-3">
             <h2 className="text-xl">Category Managment</h2>
             {/* ketika data category kosong */}
             {/* <div>
@@ -189,15 +189,13 @@ export default function Category() {
             </h2>
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* start ketika data kosong */}
-              <div
-                className={`flex border h-full 2xl:h-69vh overflow-scroll mt-10`}
-              >
+              <div className={`flex h-full 2xl:h-69vh overflow-scroll mt-10`}>
                 {/* <div
               className={`flex items-center justify-center border h-69vh overflow-scroll mt-10`}
             > */}
                 {/* img empty cart */}
                 {/* <img src={ImgEmptyCart} alt="img-empty-cart" /> */}
-                <ul className="w-full">
+                <ul className="w-full px-3">
                   <li className="mt-5">
                     <input
                       {...register("name", {
