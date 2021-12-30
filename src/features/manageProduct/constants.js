@@ -31,6 +31,13 @@ export const ERROR_GET_SINGLE_PRODUCT =
   "features/manageProduct/ERROR_GET_SINGLE_PRODUCT";
 export const SUCCESS_GET_SINGLE_PRODUCT =
   "features/manageProduct/SUCCESS_GET_SINGLE_PRODUCT";
+// UPDATE PRODUCT PRODUCT
+export const START_UPDATE_PRODUCT =
+  "features/manageProduct/START_UPDATE_PRODUCT";
+export const ERROR_UPDATE_PRODUCT =
+  "features/manageProduct/ERROR_UPDATE_PRODUCT";
+export const SUCCESS_UPDATE_PRODUCT =
+  "features/manageProduct/SUCCESS_UPDATE_PRODUCT";
 
 // clear status
 export const CLEAR_STATUS = "features/manageProduct/CLEAR_STATUS";

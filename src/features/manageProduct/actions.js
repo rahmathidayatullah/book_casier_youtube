@@ -15,6 +15,9 @@ import {
   START_GET_SINGLE_PRODUCT,
   ERROR_GET_SINGLE_PRODUCT,
   SUCCESS_GET_SINGLE_PRODUCT,
+  START_UPDATE_PRODUCT,
+  ERROR_UPDATE_PRODUCT,
+  SUCCESS_UPDATE_PRODUCT,
 } from "./constants";
 import {
   postImageProduct,
@@ -22,6 +25,7 @@ import {
   getAllProduct,
   deleteProduct,
   getProduct,
+  putProduct,
 } from "../../api/manageProduct";
 let debouncedFetchProduct = debounce(getAllProduct, 1000);
 
@@ -133,6 +137,29 @@ export const getSingleProduct = (id) => {
     } catch (error) {
       dispatch({
         type: ERROR_GET_SINGLE_PRODUCT,
+      });
+    }
+  };
+};
+
+export const updateProduct = (form, id) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: START_UPDATE_PRODUCT,
+    });
+    //
+    try {
+      let {
+        data: { data },
+      } = await putProduct(form, id);
+
+      dispatch({
+        type: SUCCESS_UPDATE_PRODUCT,
+        data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_UPDATE_PRODUCT,
       });
     }
   };

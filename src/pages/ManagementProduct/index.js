@@ -14,6 +14,7 @@ import {
   fetchAllProduct,
   getSingleProduct,
   removeProduct,
+  updateProduct,
 } from "../../features/manageProduct/actions";
 import { CLEAR_STATUS } from "../../features/manageProduct/constants";
 import moment from "moment";
@@ -30,7 +31,7 @@ export default function ManagementProduct() {
   const manageProduct = useSelector((state) => state.manageProduct);
   // console.log("categories", categories);
   console.log("manageProduct", manageProduct);
-
+  const [statusUpdate, setStatusUpdate] = useState(false);
   const [productData, setProductData] = useState({
     name: "",
     id: "",
@@ -59,11 +60,12 @@ export default function ManagementProduct() {
   } = useForm();
 
   const onSubmit = () => {
-    // alert("berhasil");
+    if (statusUpdate) {
+      dispatch(updateProduct(form, manageProduct.dataSingle.id));
+    } else {
+      dispatch(createProduct(form));
+    }
 
-    dispatch(createProduct(form));
-
-    // end line
     reset();
   };
   const handleChange = (e) => {
@@ -104,6 +106,7 @@ export default function ManagementProduct() {
 
   const handleEdit = (id) => {
     dispatch(getSingleProduct(id));
+    setStatusUpdate(true);
   };
 
   useEffect(() => {
@@ -157,11 +160,29 @@ export default function ManagementProduct() {
         type: CLEAR_STATUS,
       });
     }
+    if (manageProduct.statusUpdate === "success") {
+      dispatch(fetchAllProduct());
+      setForm({
+        title: "",
+        auhtor: "",
+        cover: "",
+        published: "",
+        price: "",
+        stock: "",
+        category: "",
+      });
+      setStatusUpdate(false);
+      setImageFile("");
+      dispatch({
+        type: CLEAR_STATUS,
+      });
+    }
   }, [
     manageProduct.statusPostImg,
     manageProduct.statusPostProduct,
     manageProduct.statusDeleteProduct,
     manageProduct.statusGetSingle,
+    manageProduct.statusUpdate,
   ]);
   return (
     <div>
@@ -271,21 +292,19 @@ export default function ManagementProduct() {
             </h2>
             {/* start ketika data kosong */}
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div
-                className={`flex border h-full 2xl:h-78vh overflow-scroll mt-10`}
-              >
+              <div className={`flex h-full 2xl:h-78vh overflow-scroll mt-10`}>
                 {/* <div
               className={`flex items-center justify-center border h-69vh overflow-scroll mt-10`}
             > */}
                 {/* img empty cart */}
                 {/* <img src={ImgEmptyCart} alt="img-empty-cart" /> */}
-                <ul className="w-full">
+                <ul className="w-full px-5">
                   <li className="mt-5">
                     <div className="shadow-1xl p-4 rounded-xl flex flex-col items-center relative justify-center cursor-pointer">
                       <input
-                        {...register("cover", {
-                          required: "cover image tidak boleh kosong",
-                        })}
+                        // {...register("cover", {
+                        //   required: "cover image tidak boleh kosong",
+                        // })}
                         onChange={handleChange}
                         name="cover"
                         // value={form?.cover}
@@ -329,11 +348,11 @@ export default function ManagementProduct() {
                         </div>
                       )}
                     </div>
-                    {errors.cover && (
+                    {/* {errors.cover && (
                       <p className="mt-2 text-red-dragon">
                         {errors.cover.message}
                       </p>
-                    )}
+                    )} */}
                   </li>
                   <li className="mt-5">
                     <input
