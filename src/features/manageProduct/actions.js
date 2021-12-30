@@ -12,12 +12,16 @@ import {
   START_DELETE_PRODUCT,
   ERROR_DELETE_PRODUCT,
   SUCCESS_DELETE_PRODUCT,
+  START_GET_SINGLE_PRODUCT,
+  ERROR_GET_SINGLE_PRODUCT,
+  SUCCESS_GET_SINGLE_PRODUCT,
 } from "./constants";
 import {
   postImageProduct,
   postProduct,
   getAllProduct,
   deleteProduct,
+  getProduct,
 } from "../../api/manageProduct";
 let debouncedFetchProduct = debounce(getAllProduct, 1000);
 
@@ -107,6 +111,28 @@ export const removeProduct = (id) => {
     } catch (error) {
       dispatch({
         type: ERROR_DELETE_PRODUCT,
+      });
+    }
+  };
+};
+export const getSingleProduct = (id) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: START_GET_SINGLE_PRODUCT,
+    });
+    //
+    try {
+      let {
+        data: { data },
+      } = await getProduct(id);
+
+      dispatch({
+        type: SUCCESS_GET_SINGLE_PRODUCT,
+        data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_GET_SINGLE_PRODUCT,
       });
     }
   };

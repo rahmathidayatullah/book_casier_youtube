@@ -12,6 +12,7 @@ import {
   createImageProduct,
   createProduct,
   fetchAllProduct,
+  getSingleProduct,
   removeProduct,
 } from "../../features/manageProduct/actions";
 import { CLEAR_STATUS } from "../../features/manageProduct/constants";
@@ -35,6 +36,7 @@ export default function ManagementProduct() {
     id: "",
   });
   const [imageFile, setImageFile] = useState("");
+  console.log("imageFile", imageFile);
   const [form, setForm] = useState({
     title: "",
     auhtor: "",
@@ -45,7 +47,7 @@ export default function ManagementProduct() {
     category: "",
   });
 
-  // console.log("form", form);
+  console.log("form", form);
   // console.log("imageFile", imageFile);
   const {
     register,
@@ -100,6 +102,10 @@ export default function ManagementProduct() {
     setNotif({ ...notif, delete: false });
   };
 
+  const handleEdit = (id) => {
+    dispatch(getSingleProduct(id));
+  };
+
   useEffect(() => {
     dispatch(fetchCategory());
     dispatch(fetchAllProduct());
@@ -136,10 +142,26 @@ export default function ManagementProduct() {
     if (manageProduct.statusDeleteProduct === "success") {
       dispatch(fetchAllProduct());
     }
+    if (manageProduct.statusGetSingle === "success") {
+      setForm({
+        title: manageProduct.dataSingle.title,
+        auhtor: manageProduct.dataSingle.auhtor,
+        cover: manageProduct.dataSingle.cover,
+        published: manageProduct.dataSingle.published,
+        price: manageProduct.dataSingle.price,
+        stock: manageProduct.dataSingle.stock,
+        category: manageProduct.dataSingle.category,
+      });
+      setImageFile(manageProduct.dataSingle.cover);
+      dispatch({
+        type: CLEAR_STATUS,
+      });
+    }
   }, [
     manageProduct.statusPostImg,
     manageProduct.statusPostProduct,
     manageProduct.statusDeleteProduct,
+    manageProduct.statusGetSingle,
   ]);
   return (
     <div>
@@ -229,7 +251,10 @@ export default function ManagementProduct() {
                               className="cursor-pointer absolute right-10 top-10"
                               stroke="#FF0000"
                             />
-                            <IconEdit className="cursor-pointer absolute right-10 bottom-10" />
+                            <IconEdit
+                              onClick={() => handleEdit(items.id)}
+                              className="cursor-pointer absolute right-10 bottom-10"
+                            />
                           </div>
                         </li>
                       );
@@ -286,11 +311,21 @@ export default function ManagementProduct() {
                           className="overflow-hidden border"
                           style={{ width: "273px", height: "361px" }}
                         >
-                          <img
-                            className="w-full h-full"
-                            src={imageFile}
-                            alt="img-data"
-                          />
+                          {/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(
+                            imageFile
+                          ) ? (
+                            <img
+                              className="w-full h-full"
+                              src={config.api_image + form.cover}
+                              alt="img-data"
+                            />
+                          ) : (
+                            <img
+                              className="w-full h-full"
+                              src={imageFile}
+                              alt="img-data"
+                            />
+                          )}
                         </div>
                       )}
                     </div>
@@ -368,7 +403,7 @@ export default function ManagementProduct() {
                       })}
                       onChange={handleChange}
                       name="published"
-                      value={form.published}
+                      value={moment(form.published).format("YYYY-MM-DD")}
                       type="date"
                       placeholder="Book author/publisher"
                       className="py-4 px-6 text-base rounded-lg shadow-1xl focus:outline-none w-full"

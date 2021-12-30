@@ -11,6 +11,9 @@ import {
   START_DELETE_PRODUCT,
   ERROR_DELETE_PRODUCT,
   SUCCESS_DELETE_PRODUCT,
+  START_GET_SINGLE_PRODUCT,
+  ERROR_GET_SINGLE_PRODUCT,
+  SUCCESS_GET_SINGLE_PRODUCT,
   CLEAR_STATUS,
 } from "./constants";
 
@@ -29,6 +32,7 @@ const initialState = {
   statusPostProduct: statuslist.idle,
   statusPostImg: statuslist.idle,
   statusDeleteProduct: statuslist.idle,
+  statusGetSingle: statuslist.idle,
 };
 
 export default function reducer(state = initialState, action) {
@@ -101,12 +105,30 @@ export default function reducer(state = initialState, action) {
         ...state,
         statusDeleteProduct: statuslist.error,
       };
+    // get single product
+    case START_GET_SINGLE_PRODUCT:
+      return {
+        ...state,
+        statusGetSingle: statuslist.process,
+      };
+    case SUCCESS_GET_SINGLE_PRODUCT:
+      return {
+        ...state,
+        statusGetSingle: statuslist.success,
+        dataSingle: action.data,
+      };
+    case ERROR_GET_SINGLE_PRODUCT:
+      return {
+        ...state,
+        statusGetSingle: statuslist.error,
+      };
     case CLEAR_STATUS:
       return {
         ...state,
         statusPostImg: statuslist.idle,
         statusPostProduct: statuslist.idle,
         statusDeleteProduct: statuslist.idle,
+        statusGetSingle: statuslist.idle,
       };
 
     default:
