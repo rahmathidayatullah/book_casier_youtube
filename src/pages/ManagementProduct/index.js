@@ -6,7 +6,16 @@ import ImgCategory from "../../assets/img/empty_Category.png";
 import ImgBook from "../../assets/img/img_book.png";
 import { useForm } from "react-hook-form";
 import ImgProduct1 from "../../assets/img/listproduct/img1.png";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCategory } from "../../features/category/actions";
+import { createImageProduct } from "../../features/manageProduct/actions";
+import { CLEAR_STATUS } from "../../features/manageProduct/constants";
 export default function ManagementProduct() {
+  const dispatch = useDispatch();
+  const categories = useSelector((state) => state.categories);
+  const manageProduct = useSelector((state) => state.manageProduct);
+  // console.log("categories", categories);
+  console.log("manageProduct", manageProduct);
   const [imageFile, setImageFile] = useState("");
   const [form, setForm] = useState({
     title: "",
@@ -18,8 +27,8 @@ export default function ManagementProduct() {
     category: "",
   });
 
-  console.log("form", form);
-  console.log("imageFile", imageFile);
+  // console.log("form", form);
+  // console.log("imageFile", imageFile);
   const {
     register,
     handleSubmit,
@@ -29,9 +38,15 @@ export default function ManagementProduct() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    alert("berhasil");
+
+    // end line
+    reset();
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
+    clearErrors(name);
 
     if (name === "cover") {
       let reader = new FileReader();
@@ -45,10 +60,28 @@ export default function ManagementProduct() {
         };
         reader.readAsDataURL(file);
       }
+
+      let formData = new FormData();
+      formData.append("image", file);
+
+      dispatch(createImageProduct(formData));
     } else {
       setForm({ ...form, [name]: value });
     }
   };
+
+  useEffect(() => {
+    dispatch(fetchCategory());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (manageProduct.statusPostImg === "success") {
+      setForm({ ...form, cover: manageProduct.dataPostImgProduct.image.src });
+      dispatch({
+        type: CLEAR_STATUS,
+      });
+    }
+  }, [manageProduct.statusPostImg]);
   return (
     <div>
       <div className="ml-32 grid grid-cols-5">
@@ -140,20 +173,36 @@ export default function ManagementProduct() {
                         })}
                         onChange={handleChange}
                         name="cover"
-                        value={form.cover}
+                        // value={form?.cover}
                         type="file"
                         className="absolute w-full h-full cursor-pointer opacity-0"
                         accept="image/*"
                       />
-                      <div>
-                        <img src={ImgBook} alt="img-book" />
-                        <p className="text-gray-culture text-xl mt-4 text-center">
-                          Click tio select image
-                        </p>
-                        <p className="text-gray-culture text-xl text-center">
-                          545 x 361 pixels
-                        </p>
-                      </div>
+
+                      {/* ketika data image kosong / default */}
+                      {!imageFile ? (
+                        <div>
+                          <img src={ImgBook} alt="img-book" />
+                          <p className="text-gray-culture text-xl mt-4 text-center">
+                            Click tio select image
+                          </p>
+                          <p className="text-gray-culture text-xl text-center">
+                            545 x 361 pixels
+                          </p>
+                        </div>
+                      ) : (
+                        /* ketika data telah di dari local */
+                        <div
+                          className="overflow-hidden border"
+                          style={{ width: "273px", height: "361px" }}
+                        >
+                          <img
+                            className="w-full h-full"
+                            src={imageFile}
+                            alt="img-data"
+                          />
+                        </div>
+                      )}
                     </div>
                     {errors.cover && (
                       <p className="mt-2 text-red-dragon">
@@ -207,9 +256,14 @@ export default function ManagementProduct() {
                       name="category"
                       value={form.category}
                     >
-                      <option>Select Category</option>
-                      <option>Select Category</option>
-                      <option>Select Category</option>
+                      <option value="">Select Category</option>
+                      {categories?.data?.map((items, index) => {
+                        return (
+                          <option key={index} value={items.id}>
+                            {items.name}
+                          </option>
+                        );
+                      })}
                     </select>
                     {errors.category && (
                       <p className="mt-2 text-red-dragon">
