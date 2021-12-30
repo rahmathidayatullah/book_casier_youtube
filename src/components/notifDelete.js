@@ -1,7 +1,7 @@
 import React from "react";
 import IconWarning from "../assets/icon/warning";
 import IconClose from "../assets/icon/close";
-export default function NotifDelete({ show, name, onClick, closeClick }) {
+export default function NotifDelete({ show, name, onClick, closeClick, text }) {
   return (
     <div
       className={`rounded-xl bg-white shadow-1xl p-8 fixed z-10 bottom-10 left-8 w-1/2 transform duration-200 transition-all ${
@@ -14,7 +14,7 @@ export default function NotifDelete({ show, name, onClick, closeClick }) {
       </div>
       <div className="flex items-center justify-between">
         <p className="font-normal text-sm">
-          Delete the category{" "}
+          Delete the {text} &nbsp;
           <span className="font-semibold text-green-mantis">{name}</span> this
           action cannot be undone
         </p>

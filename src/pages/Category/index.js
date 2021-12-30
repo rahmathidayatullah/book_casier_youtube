@@ -112,6 +112,7 @@ export default function Category() {
     <div>
       <NotifSukses name={categories?.dataPost?.name} show={notif.sukses} />
       <NotifDelete
+        text="category"
         name={categoryData.name}
         show={notif.delete}
         closeClick={() => setNotif({ ...form, delete: false })}

@@ -8,14 +8,32 @@ import { useForm } from "react-hook-form";
 import ImgProduct1 from "../../assets/img/listproduct/img1.png";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCategory } from "../../features/category/actions";
-import { createImageProduct } from "../../features/manageProduct/actions";
+import {
+  createImageProduct,
+  createProduct,
+  fetchAllProduct,
+  removeProduct,
+} from "../../features/manageProduct/actions";
 import { CLEAR_STATUS } from "../../features/manageProduct/constants";
+import moment from "moment";
+import { config } from "../../config";
+import NotifSukses from "../../components/notifSukses";
+import NotifDelete from "../../components/notifDelete";
 export default function ManagementProduct() {
+  const [notif, setNotif] = useState({
+    sukses: false,
+    delete: false,
+  });
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
   const manageProduct = useSelector((state) => state.manageProduct);
   // console.log("categories", categories);
   console.log("manageProduct", manageProduct);
+
+  const [productData, setProductData] = useState({
+    name: "",
+    id: "",
+  });
   const [imageFile, setImageFile] = useState("");
   const [form, setForm] = useState({
     title: "",
@@ -39,7 +57,9 @@ export default function ManagementProduct() {
   } = useForm();
 
   const onSubmit = () => {
-    alert("berhasil");
+    // alert("berhasil");
+
+    dispatch(createProduct(form));
 
     // end line
     reset();
@@ -70,8 +90,19 @@ export default function ManagementProduct() {
     }
   };
 
+  const handleDelete = (title, id) => {
+    setProductData({ ...productData, name: title, id: id });
+    setNotif({ ...notif, delete: true });
+  };
+
+  const handleDeleteApi = () => {
+    dispatch(removeProduct(productData.id));
+    setNotif({ ...notif, delete: false });
+  };
+
   useEffect(() => {
     dispatch(fetchCategory());
+    dispatch(fetchAllProduct());
   }, [dispatch]);
 
   useEffect(() => {
@@ -81,9 +112,48 @@ export default function ManagementProduct() {
         type: CLEAR_STATUS,
       });
     }
-  }, [manageProduct.statusPostImg]);
+    if (manageProduct.statusPostProduct === "success") {
+      dispatch(fetchAllProduct());
+      setNotif({ ...notif, sukses: true });
+      setTimeout(() => {
+        setNotif({ ...notif, sukses: false });
+        dispatch({
+          type: CLEAR_STATUS,
+        });
+      }, 5000);
+      setForm({
+        title: "",
+        auhtor: "",
+        cover: "",
+        published: "",
+        price: "",
+        stock: "",
+        category: "",
+      });
+      setImageFile("");
+      reset();
+    }
+    if (manageProduct.statusDeleteProduct === "success") {
+      dispatch(fetchAllProduct());
+    }
+  }, [
+    manageProduct.statusPostImg,
+    manageProduct.statusPostProduct,
+    manageProduct.statusDeleteProduct,
+  ]);
   return (
     <div>
+      <NotifSukses
+        name={manageProduct?.dataPostProduct?.data?.title}
+        show={notif.sukses}
+      />
+      <NotifDelete
+        text="buku"
+        name={productData.name}
+        show={notif.delete}
+        closeClick={() => setNotif({ ...form, delete: false })}
+        onClick={() => handleDeleteApi()}
+      />
       <div className="ml-32 grid grid-cols-5">
         <div className="col-span-5 2xl:col-span-3">
           <div className="h-full 2xl:h-screen pt-9 overflow-scroll">
@@ -99,7 +169,7 @@ export default function ManagementProduct() {
             </div> */}
 
             {/* ketika category terisi */}
-            <div>
+            <div className="px-4">
               <div className="relative mt-12">
                 <input
                   type="text"
@@ -111,40 +181,60 @@ export default function ManagementProduct() {
               </div>
 
               <ul className="mt-8">
-                <li>
-                  <div className="shadow-1xl flex items-center p-4 rounded-lg relative">
-                    {/* img box */}
-                    <div className="min-w-110px w-110px h-110px rounded-xl overflow-hidden mr-8">
-                      <img
-                        className="h-full w-full"
-                        src={ImgProduct1}
-                        alt="img-card"
-                      />
-                    </div>
-                    {/* text */}
-                    <div>
-                      <p className="text-base font-bold">Faktor Lattes </p>
-                      <div className="flex items-center mt-1">
-                        <p className="font-medium text-xs text-green-mantis mr-2">
-                          Published at
-                        </p>
-                        <p className="bg-green-mantis px-2 py-1 rounded-lg text-white font-medium text-xs">
-                          02/07/2021
-                        </p>
-                      </div>
-                      <p className="font-medium text-xs text-gray-400 mt-4">
-                        Author : David Bach
-                      </p>
-                      <p className="font-medium text-base mt-1">$21.01</p>
-                    </div>
-                    {/* icon delete */}
-                    <IconDelete
-                      className="cursor-pointer absolute right-10 top-10"
-                      stroke="#FF0000"
-                    />
-                    <IconEdit className="cursor-pointer absolute right-10 bottom-10" />
-                  </div>
-                </li>
+                {manageProduct.status === "idle"
+                  ? "idle"
+                  : manageProduct.status === "process"
+                  ? "process"
+                  : manageProduct.status === "success"
+                  ? manageProduct.data.map((items, index) => {
+                      return (
+                        <li
+                          key={index}
+                          className={`${index === 0 ? "" : "mt-8"}`}
+                        >
+                          <div className="shadow-1xl flex items-center p-4 rounded-lg relative">
+                            {/* img box */}
+                            <div className="min-w-110px w-110px h-110px rounded-xl overflow-hidden mr-8">
+                              <img
+                                className="h-full w-full"
+                                src={`${config.api_image}${items.cover}`}
+                                alt="img-card"
+                              />
+                            </div>
+                            {/* text */}
+                            <div>
+                              <p className="text-base font-bold">
+                                {items.title}
+                              </p>
+                              <div className="flex items-center mt-1">
+                                <p className="font-medium text-xs text-green-mantis mr-2">
+                                  Published at
+                                </p>
+                                <p className="bg-green-mantis px-2 py-1 rounded-lg text-white font-medium text-xs">
+                                  {moment(items.published).format("DD/MM/YYYY")}
+                                </p>
+                              </div>
+                              <p className="font-medium text-xs text-gray-400 mt-4">
+                                Author : {items.auhtor}
+                              </p>
+                              <p className="font-medium text-base mt-1">
+                                ${items.price}
+                              </p>
+                            </div>
+                            {/* icon delete */}
+                            <IconDelete
+                              onClick={() =>
+                                handleDelete(items.title, items.id)
+                              }
+                              className="cursor-pointer absolute right-10 top-10"
+                              stroke="#FF0000"
+                            />
+                            <IconEdit className="cursor-pointer absolute right-10 bottom-10" />
+                          </div>
+                        </li>
+                      );
+                    })
+                  : "error fetching"}
               </ul>
             </div>
           </div>

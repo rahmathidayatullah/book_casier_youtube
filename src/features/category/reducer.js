@@ -128,7 +128,6 @@ export default function reducer(state = initialState, action) {
         statusUpdate: statuslist.idle,
         statusGetSingle: statuslist.idle,
       };
-
     default:
       return state;
   }
