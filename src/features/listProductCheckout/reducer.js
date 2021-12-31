@@ -7,7 +7,9 @@ const statuslist = {
   error: "error",
 };
 const initialState = {
-  data: [],
+  data: localStorage.getItem("cart")
+    ? JSON.parse(localStorage.getItem("cart"))
+    : [],
 };
 
 export default function reducer(state = initialState, action) {
@@ -16,7 +18,7 @@ export default function reducer(state = initialState, action) {
     case ADD_PRODUCT_TO_CART:
       return {
         ...state,
-        status: action.data,
+        data: action.tempCart,
       };
     default:
       return state;

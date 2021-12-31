@@ -3,15 +3,28 @@ import { ADD_PRODUCT_TO_CART } from "./constants";
 export const addProductToCart = (data) => {
   return (dispatch, getState) => {
     let dataCart = getState().listProductCheckout.data;
-    console.log("data yang dikirm dari pages", data);
-    console.log("dataCart action", dataCart);
+
+    let tempCart = [...dataCart];
+
+    if (!tempCart.length) {
+      tempCart.push(data);
+    } else {
+      tempCart.forEach((items) => {
+        if (items.id === data.id) {
+          items.quantity = items.quantity + 1;
+        } else if (!tempCart.find((items) => items.id === data.id)) {
+          tempCart.push(data);
+        }
+      });
+    }
 
     // add data to array from reducer
-    dataCart.push(data);
-    console.log("dataCart after push", dataCart);
+
+    localStorage.setItem("cart", JSON.stringify(tempCart));
+
     dispatch({
       type: ADD_PRODUCT_TO_CART,
-      data,
+      tempCart,
     });
   };
 };

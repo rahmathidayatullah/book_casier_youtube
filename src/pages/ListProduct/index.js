@@ -31,7 +31,7 @@ export default function ListProduct() {
   const handleAddProductToCart = (data) => {
     console.log("function pages data", data);
 
-    dispatch(addProductToCart(data));
+    dispatch(addProductToCart({ ...data, quantity: 1 }));
   };
 
   useEffect(() => {
@@ -202,7 +202,9 @@ export default function ListProduct() {
                                   -
                                 </span>
                               </button>
-                              <span className="mx-7 text-sm">2</span>
+                              <span className="mx-7 text-sm">
+                                {items.quantity}
+                              </span>
                               <button className="bg-violet-purple text-white w-5 h-5 rounded-full relative">
                                 <span className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                   +
