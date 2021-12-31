@@ -14,12 +14,19 @@ import moment from "moment";
 import { fetchCategory } from "../../features/category/actions";
 import {
   addProductToCart,
+  checkoutCart,
   clearAllItemsCart,
   minItemCart,
   plusItemCart,
   removeItemCart,
 } from "../../features/listProductCheckout/actions";
+import NotifSukses from "../../components/notifSukses";
+import { CLEAR_STATUS } from "../../features/listProductCheckout/constants";
 export default function ListProduct() {
+  const [notif, setNotif] = useState({
+    sukses: false,
+    delete: false,
+  });
   const manageProduct = useSelector((state) => state.manageProduct);
   const categories = useSelector((state) => state.categories);
   const listProductCheckout = useSelector((state) => state.listProductCheckout);
@@ -45,8 +52,23 @@ export default function ListProduct() {
     dispatch(fetchCategory());
   }, [dispatch, manageProduct.keyword]);
 
+  useEffect(() => {
+    if (listProductCheckout.statusCheckout === "success") {
+      dispatch(fetchAllProduct());
+      setNotif({ ...notif, sukses: true });
+      setTimeout(() => {
+        setNotif({ ...notif, sukses: false });
+        localStorage.setItem("cart", JSON.stringify([]));
+        dispatch({
+          type: CLEAR_STATUS,
+        });
+      }, 5000);
+    }
+  }, [listProductCheckout.statusCheckout]);
+
   return (
     <div>
+      <NotifSukses name="Checkout" text="transaction" show={notif.sukses} />
       <div className="ml-32 grid grid-cols-5">
         <div className="col-span-5 2xl:col-span-3">
           <div className="h-full 2xl:h-screen pt-9 overflow-scroll px-5">
@@ -266,6 +288,7 @@ export default function ListProduct() {
                     ? "bg-violet-purple"
                     : "bg-soft-purple cursor-not-allowed"
                 } p-5 text-white w-full rounded-xl`}
+                onClick={() => dispatch(checkoutCart())}
               >
                 <p className="font-bold">
                   Checkout{" "}

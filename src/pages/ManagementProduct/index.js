@@ -195,6 +195,7 @@ export default function ManagementProduct() {
       <NotifSukses
         name={manageProduct?.dataPostProduct?.data?.title}
         show={notif.sukses}
+        text="book"
       />
       <NotifDelete
         text="buku"

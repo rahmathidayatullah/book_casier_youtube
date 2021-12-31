@@ -1,10 +1,10 @@
 import React from "react";
 import IconSukses from "../assets/icon/success";
 import IconClose from "../assets/icon/close";
-export default function NotifSukses({ show, name }) {
+export default function NotifSukses({ show, name, text }) {
   return (
     <div
-      className={`rounded-xl bg-white shadow-1xl p-8 fixed z-10 bottom-10 left-8 w-1/2 transform duration-200 transition-all ${
+      className={`rounded-xl bg-white shadow-1xl p-8 fixed z-30 bottom-10 left-8 w-1/2 transform duration-200 transition-all ${
         show ? "left-0" : "-left-full"
       }`}
     >
@@ -14,7 +14,7 @@ export default function NotifSukses({ show, name }) {
       </div>
       <p className="font-normal text-sm">
         <span className="font-semibold text-green-mantis">{name}</span> has been
-        successfully added into the category list
+        successfully added into the {text} list
       </p>
       <IconClose className="absolute top-5 right-5 cursor-pointer" />
     </div>

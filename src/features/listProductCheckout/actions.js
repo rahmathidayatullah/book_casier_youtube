@@ -4,7 +4,44 @@ import {
   PLUS_ITEM_CART,
   REMOVE_ITEM_CART,
   CLEAR_ALL_ITEMS_CART,
+  START_CHECKOUT,
+  ERROR_CHECKOUT,
+  SUCCESS_CHECKOUT,
 } from "./constants";
+import { postTransaction } from "../../api/cartCheckout";
+
+export const checkoutCart = () => {
+  return async (dispatch, getState) => {
+    let dataCart = getState().listProductCheckout.data;
+    console.log("dataCart", dataCart);
+
+    let dataSend = dataCart.map((items) => {
+      return { productId: items.id, quantity: items.quantity };
+    });
+
+    let form = {
+      payload: dataSend,
+    };
+
+    dispatch({
+      type: START_CHECKOUT,
+    });
+    try {
+      let {
+        data: { data },
+      } = await postTransaction(form);
+
+      dispatch({
+        type: SUCCESS_CHECKOUT,
+        data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_CHECKOUT,
+      });
+    }
+  };
+};
 
 export const addProductToCart = (data) => {
   return (dispatch, getState) => {

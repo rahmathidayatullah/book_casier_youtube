@@ -117,7 +117,11 @@ export default function Category() {
   ]);
   return (
     <div>
-      <NotifSukses name={categories?.dataPost?.name} show={notif.sukses} />
+      <NotifSukses
+        name={categories?.dataPost?.name}
+        show={notif.sukses}
+        text="category"
+      />
       <NotifDelete
         text="category"
         name={categoryData.name}
