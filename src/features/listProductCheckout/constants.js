@@ -1,2 +1,2 @@
-export const SEARCH_BY_KEYWORD =
-  "features/listProductCheckout/SEARCH_BY_KEYWORD";
+export const ADD_PRODUCT_TO_CART =
+  "features/listProductCheckout/ADD_PRODUCT_TO_CART";

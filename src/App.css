@@ -54,12 +54,23 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #dddddd;
 }
-
-.card:hover{
-  background-color: black;
-  cursor: pointer;
+.card{
   position: absolute;
-  inset: 0;
-  opacity: 0.5;
   z-index: 10;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all;
+  transition-duration: 0.3s;
+  cursor: pointer;
+  border-radius: 12px;
+  background-color: transparent;
+  color: transparent;
+  font-weight: normal;
+  font-size: 16px;
+}
+.card:hover{
+  color: white;
+  background-color: #000000ab;
 }

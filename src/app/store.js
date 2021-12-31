@@ -3,7 +3,7 @@ import { combineReducers, createStore, applyMiddleware, compose } from "redux";
 
 import categoryReducer from "../features/category/reducer";
 import manageProductReducer from "../features/manageProduct/reducer";
-
+import listProductCheckoutReducer from "../features/listProductCheckout/reducer";
 // (2) import redux-thunk middleware
 import thunk from "redux-thunk";
 
@@ -14,6 +14,7 @@ const composerEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducers = combineReducers({
   categories: categoryReducer,
   manageProduct: manageProductReducer,
+  listProductCheckout: listProductCheckoutReducer,
 });
 
 // (5) buat store, dan gunakan composerEnhancer + middleware thunk
