@@ -2,6 +2,7 @@ import {
   ADD_PRODUCT_TO_CART,
   MIN_ITEM_CART,
   PLUS_ITEM_CART,
+  REMOVE_ITEM_CART,
 } from "./constants";
 
 export const addProductToCart = (data) => {
@@ -39,16 +40,32 @@ export const minItemCart = (id) => {
     let tempCart = [...dataCart];
 
     tempCart.forEach((items) => {
-      if (items.id === id) {
+      if (items.quantity === 1) {
+        // function remove/delete
+        dispatch(removeItemCart(id));
+      } else {
         items.quantity = items.quantity - 1;
+        localStorage.setItem("cart", JSON.stringify(tempCart));
+
+        dispatch({
+          type: MIN_ITEM_CART,
+          tempCart,
+        });
       }
     });
+  };
+};
 
-    localStorage.setItem("cart", JSON.stringify(tempCart));
+export const removeItemCart = (id) => {
+  return (dispatch, getState) => {
+    let dataCart = getState().listProductCheckout.data;
+    let sortirRemoveDataCart = dataCart.filter((items) => items.id !== id);
+
+    localStorage.setItem("cart", JSON.stringify(sortirRemoveDataCart));
 
     dispatch({
-      type: MIN_ITEM_CART,
-      tempCart,
+      type: REMOVE_ITEM_CART,
+      sortirRemoveDataCart,
     });
   };
 };
@@ -60,7 +77,12 @@ export const plusItemCart = (id) => {
 
     tempCart.forEach((items) => {
       if (items.id === id) {
-        items.quantity = items.quantity + 1;
+        if (items.quantity === items.stock) {
+          // items.quantity = items.quantity + 0;
+          alert("Stock tidak cukup");
+        } else {
+          items.quantity = items.quantity + 1;
+        }
       }
     });
 

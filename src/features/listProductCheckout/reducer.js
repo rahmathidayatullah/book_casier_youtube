@@ -2,6 +2,7 @@ import {
   ADD_PRODUCT_TO_CART,
   MIN_ITEM_CART,
   PLUS_ITEM_CART,
+  REMOVE_ITEM_CART,
 } from "./constants";
 
 const statuslist = {
@@ -33,6 +34,11 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         data: action.tempCart,
+      };
+    case REMOVE_ITEM_CART:
+      return {
+        ...state,
+        data: action.sortirRemoveDataCart,
       };
     default:
       return state;
