@@ -12,7 +12,11 @@ import ImgCategory from "../../assets/img/empty_Category.png";
 import { config } from "../../config";
 import moment from "moment";
 import { fetchCategory } from "../../features/category/actions";
-import { addProductToCart } from "../../features/listProductCheckout/actions";
+import {
+  addProductToCart,
+  minItemCart,
+  plusItemCart,
+} from "../../features/listProductCheckout/actions";
 export default function ListProduct() {
   const manageProduct = useSelector((state) => state.manageProduct);
   const categories = useSelector((state) => state.categories);
@@ -197,7 +201,10 @@ export default function ListProduct() {
                             </p>
                             {/* plus minus */}
                             <div className="flex items-center mt-5">
-                              <button className="bg-violet-purple text-white w-5 h-5 rounded-full relative">
+                              <button
+                                className="bg-violet-purple text-white w-5 h-5 rounded-full relative"
+                                onClick={() => dispatch(minItemCart(items.id))}
+                              >
                                 <span className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                   -
                                 </span>
@@ -205,7 +212,10 @@ export default function ListProduct() {
                               <span className="mx-7 text-sm">
                                 {items.quantity}
                               </span>
-                              <button className="bg-violet-purple text-white w-5 h-5 rounded-full relative">
+                              <button
+                                className="bg-violet-purple text-white w-5 h-5 rounded-full relative"
+                                onClick={() => dispatch(plusItemCart(items.id))}
+                              >
                                 <span className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                   +
                                 </span>

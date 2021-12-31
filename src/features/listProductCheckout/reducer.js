@@ -1,4 +1,8 @@
-import { ADD_PRODUCT_TO_CART } from "./constants";
+import {
+  ADD_PRODUCT_TO_CART,
+  MIN_ITEM_CART,
+  PLUS_ITEM_CART,
+} from "./constants";
 
 const statuslist = {
   idle: "idle",
@@ -16,6 +20,16 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     // get category
     case ADD_PRODUCT_TO_CART:
+      return {
+        ...state,
+        data: action.tempCart,
+      };
+    case MIN_ITEM_CART:
+      return {
+        ...state,
+        data: action.tempCart,
+      };
+    case PLUS_ITEM_CART:
       return {
         ...state,
         data: action.tempCart,
