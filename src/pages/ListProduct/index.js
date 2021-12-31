@@ -14,8 +14,10 @@ import moment from "moment";
 import { fetchCategory } from "../../features/category/actions";
 import {
   addProductToCart,
+  clearAllItemsCart,
   minItemCart,
   plusItemCart,
+  removeItemCart,
 } from "../../features/listProductCheckout/actions";
 export default function ListProduct() {
   const manageProduct = useSelector((state) => state.manageProduct);
@@ -160,9 +162,17 @@ export default function ListProduct() {
         </div>
         <div className="col-span-5 2xl:col-span-2">
           <div className="h-full 2xl:h-screen pt-9 xl:overflow-scroll mx-7 relative">
-            <h2 className="font-bold">
-              Codeathome <span className="font-normal">BookStore</span>
-            </h2>
+            <div className="flex items-center justify-between">
+              <h2 className="font-bold">
+                Codeathome <span className="font-normal">BookStore</span>
+              </h2>
+              <span
+                onClick={() => dispatch(clearAllItemsCart())}
+                className="font-medium cursor-pointer"
+              >
+                Clear all
+              </span>
+            </div>
             {/* start ketika data kosong */}
             <div
               className={`flex border h-full 2xl:h-69vh overflow-scroll mt-10 px-3`}
@@ -224,7 +234,10 @@ export default function ListProduct() {
                           </div>
 
                           {/* icon delete */}
-                          <IconDelete className="absolute cursor-pointer top-5 right-5" />
+                          <IconDelete
+                            onClick={() => dispatch(removeItemCart(items.id))}
+                            className="absolute cursor-pointer top-5 right-5"
+                          />
                         </div>
                       </li>
                     );
@@ -239,11 +252,26 @@ export default function ListProduct() {
             <div className="static 2xl:absolute bottom-0 w-full">
               <div className="flex items-center justify-between bg-gray-culture rounded-xl p-5 text-white">
                 <p className="font-bold">Total payment</p>
-                <p className="">$0</p>
+                <p className="">
+                  ${" "}
+                  {listProductCheckout?.data?.reduce((sum, items) => {
+                    return sum + items.price * items.quantity;
+                  }, 0)}
+                </p>
               </div>
-              <button className="flex items-center justify-center mt-4 bg-soft-purple p-5 text-white w-full rounded-xl">
+              <button
+                disabled={listProductCheckout.data.length ? false : true}
+                className={`flex items-center justify-center mt-4 ${
+                  listProductCheckout.data.length
+                    ? "bg-violet-purple"
+                    : "bg-soft-purple cursor-not-allowed"
+                } p-5 text-white w-full rounded-xl`}
+              >
                 <p className="font-bold">
-                  Checkout <span className="font-normal">(0 Book)</span>
+                  Checkout{" "}
+                  <span className="font-normal">
+                    ({listProductCheckout?.data?.length} Book)
+                  </span>
                 </p>
               </button>
             </div>

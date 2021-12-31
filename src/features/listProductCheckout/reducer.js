@@ -3,6 +3,7 @@ import {
   MIN_ITEM_CART,
   PLUS_ITEM_CART,
   REMOVE_ITEM_CART,
+  CLEAR_ALL_ITEMS_CART,
 } from "./constants";
 
 const statuslist = {
@@ -39,6 +40,11 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         data: action.sortirRemoveDataCart,
+      };
+    case CLEAR_ALL_ITEMS_CART:
+      return {
+        ...state,
+        data: [],
       };
     default:
       return state;

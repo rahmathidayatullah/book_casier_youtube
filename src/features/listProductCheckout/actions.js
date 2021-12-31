@@ -3,6 +3,7 @@ import {
   MIN_ITEM_CART,
   PLUS_ITEM_CART,
   REMOVE_ITEM_CART,
+  CLEAR_ALL_ITEMS_CART,
 } from "./constants";
 
 export const addProductToCart = (data) => {
@@ -16,7 +17,11 @@ export const addProductToCart = (data) => {
     } else {
       tempCart.forEach((items) => {
         if (items.id === data.id) {
-          items.quantity = items.quantity + 1;
+          if (items.quantity === items.stock) {
+            alert("Stock tidak cukup");
+          } else {
+            items.quantity = items.quantity + 1;
+          }
         } else if (!tempCart.find((items) => items.id === data.id)) {
           tempCart.push(data);
         }
@@ -60,9 +65,7 @@ export const removeItemCart = (id) => {
   return (dispatch, getState) => {
     let dataCart = getState().listProductCheckout.data;
     let sortirRemoveDataCart = dataCart.filter((items) => items.id !== id);
-
     localStorage.setItem("cart", JSON.stringify(sortirRemoveDataCart));
-
     dispatch({
       type: REMOVE_ITEM_CART,
       sortirRemoveDataCart,
@@ -91,6 +94,16 @@ export const plusItemCart = (id) => {
     dispatch({
       type: PLUS_ITEM_CART,
       tempCart,
+    });
+  };
+};
+
+export const clearAllItemsCart = () => {
+  return (dispatch, getState) => {
+    localStorage.setItem("cart", JSON.stringify([]));
+
+    dispatch({
+      type: CLEAR_ALL_ITEMS_CART,
     });
   };
 };
