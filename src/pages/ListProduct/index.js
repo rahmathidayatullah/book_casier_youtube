@@ -1,14 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import IconSearch from "../../assets/icon/search";
 import ImgProduct1 from "../../assets/img/listproduct/img1.png";
 import ImgEmptyCart from "../../assets/img/empty_cart.png";
 import IconDelete from "../../assets/icon/delete";
+import {
+  fetchAllProduct,
+  searchByKeyword,
+} from "../../features/manageProduct/actions";
+import ImgCategory from "../../assets/img/empty_Category.png";
+import { config } from "../../config";
+import moment from "moment";
+import { fetchCategory } from "../../features/category/actions";
 export default function ListProduct() {
+  const manageProduct = useSelector((state) => state.manageProduct);
+  const categories = useSelector((state) => state.categories);
+  console.log("manageProduct page list product", manageProduct);
+  console.log("manageProduct page list categories", categories);
+  const dispatch = useDispatch();
+
+  const [keyword, setKeyword] = useState("");
+  const searchByKey = (value) => {
+    setKeyword(value);
+    dispatch(searchByKeyword(value));
+  };
+
+  useEffect(() => {
+    dispatch(fetchAllProduct());
+    dispatch(fetchCategory());
+  }, [dispatch, manageProduct.keyword]);
+
   return (
     <div>
       <div className="ml-32 grid grid-cols-5">
         <div className="col-span-5 2xl:col-span-3">
-          <div className="h-full 2xl:h-screen pt-9 overflow-scroll">
+          <div className="h-full 2xl:h-screen pt-9 overflow-scroll px-5">
             {/* category */}
             <div>
               <ul className="flex items-center overflow-scroll">
@@ -16,30 +42,27 @@ export default function ListProduct() {
                   <div className="text-base pb-3 whitespace-nowrap">All</div>
                   <div className="w-full bg-violet-purple h-2 rounded-xl"></div>
                 </li>
-                <li className="ml-7 group cursor-pointer">
-                  <div className="text-base pb-3 group-hover:text-black duration-300 text-gray-400 whitespace-nowrap">
-                    Business & Economict
-                  </div>
-                  <div className="w-full group-hover:bg-violet-purple duration-300 bg-transparent h-2 rounded-xl"></div>
-                </li>
-                <li className="ml-7 group cursor-pointer">
-                  <div className="text-base pb-3 group-hover:text-black duration-300 text-gray-400 whitespace-nowrap">
-                    Art & Design
-                  </div>
-                  <div className="w-full group-hover:bg-violet-purple duration-300 bg-transparent h-2 rounded-xl"></div>
-                </li>
-                <li className="ml-7 group cursor-pointer">
-                  <div className="text-base pb-3 group-hover:text-black duration-300 text-gray-400 whitespace-nowrap">
-                    Financial
-                  </div>
-                  <div className="w-full group-hover:bg-violet-purple duration-300 bg-transparent h-2 rounded-xl"></div>
-                </li>
-                <li className="ml-7 group cursor-pointer">
-                  <div className="text-base pb-3 group-hover:text-black duration-300 text-gray-400 whitespace-nowrap">
-                    Humanities
-                  </div>
-                  <div className="w-full group-hover:bg-violet-purple duration-300 bg-transparent h-2 rounded-xl"></div>
-                </li>
+                {categories.status === "idle" ? (
+                  "idle"
+                ) : categories.status === "process" ? (
+                  <span className="pl-6">process</span>
+                ) : categories.status === "success" &&
+                  !categories.data.length ? (
+                  "category tidak ada"
+                ) : categories.status === "success" ? (
+                  categories.data.map((items, index) => {
+                    return (
+                      <li className="ml-7 group cursor-pointer">
+                        <div className="text-base pb-3 group-hover:text-black duration-300 text-gray-400 whitespace-nowrap">
+                          {items.name}
+                        </div>
+                        <div className="w-full group-hover:bg-violet-purple duration-300 bg-transparent h-2 rounded-xl"></div>
+                      </li>
+                    );
+                  })
+                ) : (
+                  "error fetching category"
+                )}
               </ul>
             </div>
             {/* search */}
@@ -48,6 +71,8 @@ export default function ListProduct() {
                 type="text"
                 name="search"
                 placeholder="Search.."
+                value={keyword}
+                onChange={(e) => searchByKey(e.target.value)}
                 className="py-4 px-6 text-base rounded-lg shadow-1xl focus:outline-none w-full"
               />
               <IconSearch className="absolute right-4 top-1/2 transform -translate-y-1/2" />
@@ -55,77 +80,63 @@ export default function ListProduct() {
             {/* list card */}
             <div className="grid grid-cols-6 mt-8 gap-5">
               {/* item card */}
-              <div className="col-span-6  sm:col-span-3 lg:col-span-2">
-                <div className="shadow-1xl rounded-lg px-6 py-3">
-                  <div className="flex items-center justify-center border-b-2 border-gray-300 p-10">
-                    <img src={ImgProduct1} alt="img-1" />
-                  </div>
-                  <p className="mt-3 font-medium text-gray-400">Stock : 12</p>
-                  <p className="font-bold text-base">Faktor Lattes </p>
-                  <div className="flex items-center mt-1">
-                    <p className="font-medium text-xs text-green-mantis mr-2">
-                      Published at
+              {manageProduct.status === "idle" ? (
+                "idle"
+              ) : manageProduct.status === "process" ? (
+                "process"
+              ) : manageProduct.status === "success" &&
+                !manageProduct.data
+                  .length /* ketika data product buku kosong */ ? (
+                <div>
+                  <div className="flex flex-col items-center justify-center h-full 2xl:h-80vh">
+                    <img src={ImgCategory} alt="category-empty" />
+                    <p className="font-medium text-xl mt-2 text-violet-purple">
+                      Book is Empty!
                     </p>
-                    <p className="bg-green-mantis px-2 py-1 rounded-lg text-white font-medium text-xs">
-                      02/07/2021
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-7">
-                    <p className="font-medium text-gray-400">
-                      Author : David Bach
-                    </p>
-                    <p className="font-medium text-gray-500">$21.01</p>
                   </div>
                 </div>
-              </div>
-              {/* item card */}
-              <div className="col-span-6  sm:col-span-3 lg:col-span-2">
-                <div className="shadow-1xl rounded-lg px-6 py-3">
-                  <div className="flex items-center justify-center border-b-2 border-gray-300 p-10">
-                    <img src={ImgProduct1} alt="img-1" />
-                  </div>
-                  <p className="mt-3 font-medium text-gray-400">Stock : 12</p>
-                  <p className="font-bold text-base">Faktor Lattes </p>
-                  <div className="flex items-center mt-1">
-                    <p className="font-medium text-xs text-green-mantis mr-2">
-                      Published at
-                    </p>
-                    <p className="bg-green-mantis px-2 py-1 rounded-lg text-white font-medium text-xs">
-                      02/07/2021
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-7">
-                    <p className="font-medium text-gray-400">
-                      Author : David Bach
-                    </p>
-                    <p className="font-medium text-gray-500">$21.01</p>
-                  </div>
-                </div>
-              </div>
-              {/* item card */}
-              <div className="col-span-6  sm:col-span-3 lg:col-span-2">
-                <div className="shadow-1xl rounded-lg px-6 py-3">
-                  <div className="flex items-center justify-center border-b-2 border-gray-300 p-10">
-                    <img src={ImgProduct1} alt="img-1" />
-                  </div>
-                  <p className="mt-3 font-medium text-gray-400">Stock : 12</p>
-                  <p className="font-bold text-base">Faktor Lattes </p>
-                  <div className="flex items-center mt-1">
-                    <p className="font-medium text-xs text-green-mantis mr-2">
-                      Published at
-                    </p>
-                    <p className="bg-green-mantis px-2 py-1 rounded-lg text-white font-medium text-xs">
-                      02/07/2021
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-7">
-                    <p className="font-medium text-gray-400">
-                      Author : David Bach
-                    </p>
-                    <p className="font-medium text-gray-500">$21.01</p>
-                  </div>
-                </div>
-              </div>
+              ) : manageProduct.status === "success" ? (
+                manageProduct.data.map((items, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="col-span-6  sm:col-span-3 lg:col-span-2"
+                    >
+                      <div className="shadow-1xl rounded-lg px-6 py-3 relative">
+                        <div className="card"></div>
+                        <div className="flex items-center justify-center border-b-2 border-gray-300 p-10">
+                          <img
+                            src={config.api_image + items.cover}
+                            alt="img-1"
+                          />
+                        </div>
+                        <p className="mt-3 font-medium text-gray-400">
+                          Stock : {items.stock}
+                        </p>
+                        <p className="font-bold text-base">{items.title}</p>
+                        <div className="flex items-center mt-1">
+                          <p className="font-medium text-xs text-green-mantis mr-2">
+                            Published at
+                          </p>
+                          <p className="bg-green-mantis px-2 py-1 rounded-lg text-white font-medium text-xs">
+                            {moment(items.published).format("DD/MM/YYYY")}
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-between mt-7">
+                          <p className="font-medium text-gray-400">
+                            Author : {items.auhtor}
+                          </p>
+                          <p className="font-medium text-gray-500">
+                            ${items.price}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                "error"
+              )}
             </div>
           </div>
         </div>
@@ -136,7 +147,7 @@ export default function ListProduct() {
             </h2>
             {/* start ketika data kosong */}
             <div
-              className={`flex border h-full 2xl:h-69vh overflow-scroll mt-10`}
+              className={`flex border h-full 2xl:h-69vh overflow-scroll mt-10 px-3`}
             >
               {/* <div
               className={`flex items-center justify-center border h-69vh overflow-scroll mt-10`}
