@@ -15,6 +15,7 @@ import {
   ERROR_UPDATE_CATEGORY,
   SUCCESS_UPDATE_CATEGORY,
   CLEAR_STATUS,
+  SEARCH_BY_KEYWORD,
 } from "./constants";
 
 const statuslist = {
@@ -27,6 +28,7 @@ const initialState = {
   status: statuslist.idle,
   data: [],
   limit: 50,
+  keyword: "",
   statusPost: statuslist.idle,
   statusDelete: statuslist.idle,
   statusGetSingle: statuslist.idle,
@@ -119,6 +121,11 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         statusUpdate: statuslist.error,
+      };
+    case SEARCH_BY_KEYWORD:
+      return {
+        ...state,
+        keyword: action.keyword,
       };
     case CLEAR_STATUS:
       return {

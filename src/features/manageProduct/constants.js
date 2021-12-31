@@ -39,5 +39,7 @@ export const ERROR_UPDATE_PRODUCT =
 export const SUCCESS_UPDATE_PRODUCT =
   "features/manageProduct/SUCCESS_UPDATE_PRODUCT";
 
+export const SEARCH_BY_KEYWORD = "features/manageProduct/SEARCH_BY_KEYWORD";
+
 // clear status
 export const CLEAR_STATUS = "features/manageProduct/CLEAR_STATUS";

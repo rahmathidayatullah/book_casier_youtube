@@ -17,6 +17,7 @@ import {
   START_UPDATE_PRODUCT,
   ERROR_UPDATE_PRODUCT,
   SUCCESS_UPDATE_PRODUCT,
+  SEARCH_BY_KEYWORD,
   CLEAR_STATUS,
 } from "./constants";
 
@@ -142,6 +143,11 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         statusUpdate: statuslist.error,
+      };
+    case SEARCH_BY_KEYWORD:
+      return {
+        ...state,
+        keyword: action.keyword,
       };
     case CLEAR_STATUS:
       return {

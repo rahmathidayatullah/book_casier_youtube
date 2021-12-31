@@ -31,5 +31,7 @@ export const ERROR_UPDATE_CATEGORY = "features/category/ERROR_UPDATE_CATEGORY";
 export const SUCCESS_UPDATE_CATEGORY =
   "features/category/SUCCESS_UPDATE_CATEGORY";
 
+export const SEARCH_BY_KEYWORD = "features/category/SEARCH_BY_KEYWORD";
+
 // clear status
 export const CLEAR_STATUS = "features/category/CLEAR_STATUS";

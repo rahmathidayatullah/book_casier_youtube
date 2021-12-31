@@ -11,6 +11,7 @@ import {
   getSingleCategory,
   removeCategory,
   updateCategory,
+  searchByKeyword,
 } from "../../features/category/actions";
 import NotifSukses from "../../components/notifSukses";
 import NotifDelete from "../../components/notifDelete";
@@ -73,9 +74,15 @@ export default function Category() {
     reset();
   };
 
+  const [keyword, setKeyword] = useState("");
+  const searchByKey = (value) => {
+    setKeyword(value);
+    dispatch(searchByKeyword(value));
+  };
+
   useEffect(() => {
     dispatch(fetchCategory());
-  }, [dispatch]);
+  }, [dispatch, categories.keyword]);
 
   useEffect(() => {
     if (categories.statusPost === "success") {
@@ -122,18 +129,7 @@ export default function Category() {
         <div className="col-span-5 2xl:col-span-3">
           <div className="h-full 2xl:h-screen pt-9 overflow-scroll px-3">
             <h2 className="text-xl">Category Managment</h2>
-            {/* ketika data category kosong */}
-            {/* <div>
-              
-              <div className="flex flex-col items-center justify-center h-full 2xl:h-80vh">
-                <img src={ImgCategory} alt="category-empty" />
-                <p className="font-medium text-xl mt-2 text-violet-purple">
-                  Category is Empty!
-                </p>
-              </div>
-            </div> */}
 
-            {/* ketika category terisi */}
             <div>
               {/* search */}
               <div className="relative mt-12">
@@ -141,44 +137,58 @@ export default function Category() {
                   type="text"
                   name="search"
                   placeholder="Search.."
+                  value={keyword}
+                  onChange={(e) => searchByKey(e.target.value)}
                   className="py-4 px-6 text-base rounded-lg shadow-1xl focus:outline-none w-full"
                 />
                 <IconSearch className="absolute right-4 top-1/2 transform -translate-y-1/2" />
               </div>
               {/* list category */}
               <ul className="mt-8">
-                {categories.status === "idle"
-                  ? "idle"
-                  : categories.status === "process"
-                  ? "process"
-                  : categories.status === "success"
-                  ? categories.data.map((items, index) => {
-                      return (
-                        <li
-                          key={index}
-                          className={`${index === 0 ? "" : "mt-4"}`}
-                        >
-                          <div className="shadow-1xl flex items-center justify-between py-4 px-6 rounded-lg">
-                            <p className="font-base">{items.name}</p>
-                            <div className="flex items-center">
-                              <IconDelete
-                                className="cursor-pointer mr-7"
-                                stroke="#FF0000"
-                                onClick={() =>
-                                  handleDelete(items.name, items.id)
-                                }
-                              />
-                              <IconEdit
-                                onClick={() => handleEdit(items.id)}
-                                className="cursor-pointer"
-                              />
-                              {/* icon */}
-                            </div>
+                {categories.status === "idle" ? (
+                  "idle"
+                ) : categories.status === "process" ? (
+                  "process"
+                ) : categories.status === "success" &&
+                  !categories.data.length ? (
+                  /* ketika data category kosong */
+                  <div>
+                    <div className="flex flex-col items-center justify-center h-full 2xl:h-80vh">
+                      <img src={ImgCategory} alt="category-empty" />
+                      <p className="font-medium text-xl mt-2 text-violet-purple">
+                        Category is Empty!
+                      </p>
+                    </div>
+                  </div>
+                ) : /* ketika category terisi */
+                categories.status === "success" ? (
+                  categories.data.map((items, index) => {
+                    return (
+                      <li
+                        key={index}
+                        className={`${index === 0 ? "" : "mt-4"}`}
+                      >
+                        <div className="shadow-1xl flex items-center justify-between py-4 px-6 rounded-lg">
+                          <p className="font-base">{items.name}</p>
+                          <div className="flex items-center">
+                            <IconDelete
+                              className="cursor-pointer mr-7"
+                              stroke="#FF0000"
+                              onClick={() => handleDelete(items.name, items.id)}
+                            />
+                            <IconEdit
+                              onClick={() => handleEdit(items.id)}
+                              className="cursor-pointer"
+                            />
+                            {/* icon */}
                           </div>
-                        </li>
-                      );
-                    })
-                  : "error"}
+                        </div>
+                      </li>
+                    );
+                  })
+                ) : (
+                  "error"
+                )}
               </ul>
             </div>
           </div>

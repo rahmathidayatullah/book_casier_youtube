@@ -18,6 +18,7 @@ import {
   START_UPDATE_PRODUCT,
   ERROR_UPDATE_PRODUCT,
   SUCCESS_UPDATE_PRODUCT,
+  SEARCH_BY_KEYWORD,
 } from "./constants";
 import {
   postImageProduct,
@@ -162,5 +163,14 @@ export const updateProduct = (form, id) => {
         type: ERROR_UPDATE_PRODUCT,
       });
     }
+  };
+};
+
+export const searchByKeyword = (keyword) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: SEARCH_BY_KEYWORD,
+      keyword,
+    });
   };
 };

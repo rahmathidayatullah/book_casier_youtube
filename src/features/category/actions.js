@@ -15,6 +15,7 @@ import {
   START_UPDATE_CATEGORY,
   ERROR_UPDATE_CATEGORY,
   SUCCESS_UPDATE_CATEGORY,
+  SEARCH_BY_KEYWORD,
 } from "./constants";
 
 import axios from "axios";
@@ -33,9 +34,11 @@ let debouncedFetchCategory = debounce(getAllCategories, 1000);
 export const fetchCategory = () => {
   return async (dispatch, getState) => {
     let limitState = getState().categories.limit;
+    let keywordState = getState().categories.keyword;
 
     const params = {
       limit: limitState,
+      keyword: keywordState,
     };
 
     dispatch({
@@ -144,5 +147,14 @@ export const updateCategory = (id, form) => {
         type: ERROR_UPDATE_CATEGORY,
       });
     }
+  };
+};
+
+export const searchByKeyword = (keyword) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: SEARCH_BY_KEYWORD,
+      keyword,
+    });
   };
 };
