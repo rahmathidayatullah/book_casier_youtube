@@ -19,9 +19,6 @@ import {
   ACTIVE_CATEGORYLIST,
 } from "./constants";
 
-import axios from "axios";
-import { config } from "../../config";
-
 import {
   getAllCategories,
   postCategories,

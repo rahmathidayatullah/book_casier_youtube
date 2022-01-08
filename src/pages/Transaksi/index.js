@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import IconSearch from "../../assets/icon/search";
 import IconDelete from "../../assets/icon/delete";
 import IconEdit from "../../assets/icon/edit";
 import IconTransaksi from "../../assets/icon/transaksidetail";
 import ImgCategory from "../../assets/img/empty_Category.png";
 import ImgEmptyListDetailTS from "../../assets/img/empty_list_detail_transaksi.png";
+import { fetchAllTransaction } from "../../features/transaction/actions";
+import moment from "moment";
 export default function Transaksi() {
+  const dispatch = useDispatch();
+  const transaction = useSelector((state) => state.transaction);
+  console.log("transaction", transaction);
+
+  useEffect(() => {
+    dispatch(fetchAllTransaction());
+  }, [dispatch, transaction.keyword]);
   return (
     <div>
       <div className="ml-32 grid grid-cols-5">
         <div className="col-span-5 2xl:col-span-3">
-          <div className="h-full 2xl:h-screen pt-9 overflow-scroll">
+          <div className="h-full 2xl:h-screen pt-9 overflow-scroll px-5">
             <h2 className="text-xl">Transaction </h2>
             {/* ketika data category kosong */}
             {/* <div>
@@ -34,18 +44,38 @@ export default function Transaksi() {
                 <IconSearch className="absolute right-4 top-1/2 transform -translate-y-1/2" />
               </div>
               <ul className="mt-8">
-                <li>
-                  <div className="shadow-1xl flex items-center justify-between py-4 px-6 rounded-lg">
-                    <p className="font-base">id : 3489563</p>
+                {transaction.status === "idle"
+                  ? "idle"
+                  : transaction.status === "process"
+                  ? "process"
+                  : transaction.status === "success" && !transaction.data.length
+                  ? "data kosong"
+                  : transaction.status === "success"
+                  ? transaction.data.map((items, index) => {
+                      return (
+                        <li key={index}>
+                          <div className="shadow-1xl flex items-center justify-between py-4 px-6 rounded-lg">
+                            <p className="font-base">id :{items.invoice} </p>
 
-                    <div className="h-8 w-1 bg-gray-culture"></div>
-                    <p className="font-base">Book 01, Book 02, Book 03 ...</p>
+                            <div className="h-8 w-1 bg-gray-culture"></div>
+                            <p className="font-base">
+                              {items.detailTransaction.map((itm) => {
+                                return `${itm.titleProduct},`;
+                              })}
+                              {/* Book 01, Book 02, Book 03 ... */}
+                            </p>
 
-                    <div className="h-8 w-1 bg-gray-culture"></div>
-                    <p className="font-base">16 November 2021, 00:18 AM</p>
-                    <IconTransaksi />
-                  </div>
-                </li>
+                            <div className="h-8 w-1 bg-gray-culture"></div>
+                            <p className="font-base">
+                              {moment(items.date).format("DD MMMM YY hh:ss a")}
+                              {/* 16 November 2021, 00:18 AM */}
+                            </p>
+                            <IconTransaksi />
+                          </div>
+                        </li>
+                      );
+                    })
+                  : "error fetching data"}
               </ul>
             </div>
           </div>
