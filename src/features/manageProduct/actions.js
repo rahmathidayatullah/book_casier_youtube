@@ -19,6 +19,7 @@ import {
   ERROR_UPDATE_PRODUCT,
   SUCCESS_UPDATE_PRODUCT,
   SEARCH_BY_KEYWORD,
+  SEARCH_BY_CATEGORY,
 } from "./constants";
 import {
   postImageProduct,
@@ -171,6 +172,15 @@ export const searchByKeyword = (keyword) => {
     dispatch({
       type: SEARCH_BY_KEYWORD,
       keyword,
+    });
+  };
+};
+
+export const searchByCategory = (id) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: SEARCH_BY_CATEGORY,
+      id,
     });
   };
 };

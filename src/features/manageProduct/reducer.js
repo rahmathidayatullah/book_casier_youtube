@@ -19,6 +19,7 @@ import {
   SUCCESS_UPDATE_PRODUCT,
   SEARCH_BY_KEYWORD,
   CLEAR_STATUS,
+  SEARCH_BY_CATEGORY,
 } from "./constants";
 
 const statuslist = {
@@ -148,6 +149,11 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         keyword: action.keyword,
+      };
+    case SEARCH_BY_CATEGORY:
+      return {
+        ...state,
+        category: action.id,
       };
     case CLEAR_STATUS:
       return {

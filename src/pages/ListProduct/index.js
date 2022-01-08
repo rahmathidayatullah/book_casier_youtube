@@ -6,12 +6,16 @@ import ImgEmptyCart from "../../assets/img/empty_cart.png";
 import IconDelete from "../../assets/icon/delete";
 import {
   fetchAllProduct,
+  searchByCategory,
   searchByKeyword,
 } from "../../features/manageProduct/actions";
 import ImgCategory from "../../assets/img/empty_Category.png";
 import { config } from "../../config";
 import moment from "moment";
-import { fetchCategory } from "../../features/category/actions";
+import {
+  activeSelectCategory,
+  fetchCategory,
+} from "../../features/category/actions";
 import {
   addProductToCart,
   checkoutCart,
@@ -30,8 +34,8 @@ export default function ListProduct() {
   const manageProduct = useSelector((state) => state.manageProduct);
   const categories = useSelector((state) => state.categories);
   const listProductCheckout = useSelector((state) => state.listProductCheckout);
-  console.log("page listProductCheckout", listProductCheckout);
-  console.log("manageProduct page list product", manageProduct);
+  // console.log("page listProductCheckout", listProductCheckout);
+  // console.log("manageProduct page list product", manageProduct);
   console.log("manageProduct page list categories", categories);
   const dispatch = useDispatch();
 
@@ -42,15 +46,21 @@ export default function ListProduct() {
   };
 
   const handleAddProductToCart = (data) => {
-    console.log("function pages data", data);
+    // console.log("function pages data", data);
 
     dispatch(addProductToCart({ ...data, quantity: 1 }));
+  };
+
+  const handleSortirByCategory = (id) => {
+    console.log("id", id);
+    dispatch(searchByCategory(id));
+    dispatch(activeSelectCategory(id));
   };
 
   useEffect(() => {
     dispatch(fetchAllProduct());
     dispatch(fetchCategory());
-  }, [dispatch, manageProduct.keyword]);
+  }, [dispatch, manageProduct.keyword, manageProduct.category]);
 
   useEffect(() => {
     if (listProductCheckout.statusCheckout === "success") {
@@ -75,31 +85,24 @@ export default function ListProduct() {
             {/* category */}
             <div>
               <ul className="flex items-center overflow-scroll">
-                <li className="cursor-pointer">
+                {/* <li className="cursor-pointer">
                   <div className="text-base pb-3 whitespace-nowrap">All</div>
                   <div className="w-full bg-violet-purple h-2 rounded-xl"></div>
-                </li>
-                {categories.status === "idle" ? (
-                  "idle"
-                ) : categories.status === "process" ? (
-                  <span className="pl-6">process</span>
-                ) : categories.status === "success" &&
-                  !categories.data.length ? (
-                  "category tidak ada"
-                ) : categories.status === "success" ? (
-                  categories.data.map((items, index) => {
-                    return (
-                      <li className="ml-7 group cursor-pointer">
-                        <div className="text-base pb-3 group-hover:text-black duration-300 text-gray-400 whitespace-nowrap">
-                          {items.name}
-                        </div>
-                        <div className="w-full group-hover:bg-violet-purple duration-300 bg-transparent h-2 rounded-xl"></div>
-                      </li>
-                    );
-                  })
-                ) : (
-                  "error fetching category"
-                )}
+                </li> */}
+                {categories?.dataForListCategory?.map((items, index) => {
+                  return (
+                    <li
+                      key={index}
+                      onClick={() => handleSortirByCategory(items.id)}
+                      className="ml-7 group cursor-pointer"
+                    >
+                      <div className="text-base pb-3 group-hover:text-black duration-300 text-gray-400 whitespace-nowrap">
+                        {items.name}
+                      </div>
+                      <div className="w-full group-hover:bg-violet-purple duration-300 bg-transparent h-2 rounded-xl"></div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             {/* search */}

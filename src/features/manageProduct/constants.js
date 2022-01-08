@@ -40,6 +40,7 @@ export const SUCCESS_UPDATE_PRODUCT =
   "features/manageProduct/SUCCESS_UPDATE_PRODUCT";
 
 export const SEARCH_BY_KEYWORD = "features/manageProduct/SEARCH_BY_KEYWORD";
+export const SEARCH_BY_CATEGORY = "features/manageProduct/SEARCH_BY_CATEGORY";
 
 // clear status
 export const CLEAR_STATUS = "features/manageProduct/CLEAR_STATUS";

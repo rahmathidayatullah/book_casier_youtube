@@ -16,6 +16,7 @@ import {
   ERROR_UPDATE_CATEGORY,
   SUCCESS_UPDATE_CATEGORY,
   SEARCH_BY_KEYWORD,
+  ACTIVE_CATEGORYLIST,
 } from "./constants";
 
 import axios from "axios";
@@ -50,9 +51,20 @@ export const fetchCategory = () => {
         data: { data },
       } = await debouncedFetchCategory(params);
 
+      let dataCategoryForListProduct = data.map((items) => {
+        return { ...items, isSelect: false };
+      });
+
+      dataCategoryForListProduct.unshift({
+        id: "",
+        name: "All",
+        isSelect: false,
+      });
+
       dispatch({
         type: SUCCESS_FETCHING_CATEGORY,
         data,
+        dataCategoryForListProduct,
       });
     } catch (error) {
       dispatch({
@@ -155,6 +167,27 @@ export const searchByKeyword = (keyword) => {
     dispatch({
       type: SEARCH_BY_KEYWORD,
       keyword,
+    });
+  };
+};
+
+export const activeSelectCategory = (id) => {
+  return async (dispatch, getState) => {
+    let dataCategoryListProduct = getState().categories.dataForListCategory;
+
+    dataCategoryListProduct.forEach((items) => {
+      if (items.id === id) {
+        items.isSelect = true;
+      } else {
+        items.isSelect = false;
+      }
+    });
+
+    console.log("dataCategoryListProduct", dataCategoryListProduct);
+
+    dispatch({
+      type: ACTIVE_CATEGORYLIST,
+      dataCategoryListProduct,
     });
   };
 };

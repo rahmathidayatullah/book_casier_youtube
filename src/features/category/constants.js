@@ -33,5 +33,7 @@ export const SUCCESS_UPDATE_CATEGORY =
 
 export const SEARCH_BY_KEYWORD = "features/category/SEARCH_BY_KEYWORD";
 
+export const ACTIVE_CATEGORYLIST = "features/category/ACTIVE_CATEGORYLIST";
+
 // clear status
 export const CLEAR_STATUS = "features/category/CLEAR_STATUS";

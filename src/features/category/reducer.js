@@ -16,6 +16,7 @@ import {
   SUCCESS_UPDATE_CATEGORY,
   CLEAR_STATUS,
   SEARCH_BY_KEYWORD,
+  ACTIVE_CATEGORYLIST,
 } from "./constants";
 
 const statuslist = {
@@ -27,6 +28,7 @@ const statuslist = {
 const initialState = {
   status: statuslist.idle,
   data: [],
+  dataForListCategory: [],
   limit: 50,
   keyword: "",
   statusPost: statuslist.idle,
@@ -48,6 +50,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         status: statuslist.success,
         data: action.data,
+        dataForListCategory: action.dataCategoryForListProduct,
       };
     case ERROR_FETCHING_CATEGORY:
       return {
@@ -126,6 +129,11 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         keyword: action.keyword,
+      };
+    case ACTIVE_CATEGORYLIST:
+      return {
+        ...state,
+        dataForListCategory: action.dataCategoryListProduct,
       };
     case CLEAR_STATUS:
       return {
