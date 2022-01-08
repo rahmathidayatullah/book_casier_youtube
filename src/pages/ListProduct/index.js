@@ -60,7 +60,11 @@ export default function ListProduct() {
   useEffect(() => {
     dispatch(fetchAllProduct());
     dispatch(fetchCategory());
-  }, [dispatch, manageProduct.keyword, manageProduct.category]);
+  }, [dispatch, manageProduct.keyword]);
+
+  useEffect(() => {
+    dispatch(fetchAllProduct());
+  }, [dispatch, manageProduct.category]);
 
   useEffect(() => {
     if (listProductCheckout.statusCheckout === "success") {
@@ -96,10 +100,18 @@ export default function ListProduct() {
                       onClick={() => handleSortirByCategory(items.id)}
                       className="ml-7 group cursor-pointer"
                     >
-                      <div className="text-base pb-3 group-hover:text-black duration-300 text-gray-400 whitespace-nowrap">
+                      <div
+                        className={`text-base pb-3 group-hover:text-black duration-300  ${
+                          items.isSelect ? "text-black" : "text-gray-400"
+                        } whitespace-nowrap`}
+                      >
                         {items.name}
                       </div>
-                      <div className="w-full group-hover:bg-violet-purple duration-300 bg-transparent h-2 rounded-xl"></div>
+                      <div
+                        className={`w-full group-hover:bg-violet-purple duration-300 ${
+                          items.isSelect ? "bg-violet-purple" : "bg-transparent"
+                        } h-2 rounded-xl`}
+                      ></div>
                     </li>
                   );
                 })}
@@ -200,7 +212,7 @@ export default function ListProduct() {
             </div>
             {/* start ketika data kosong */}
             <div
-              className={`flex border h-full 2xl:h-69vh overflow-scroll mt-10 px-3`}
+              className={`flex h-full 2xl:h-69vh overflow-scroll mt-10 px-3`}
             >
               {/* <div
               className={`flex items-center justify-center border h-69vh overflow-scroll mt-10`}
