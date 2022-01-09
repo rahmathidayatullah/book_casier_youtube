@@ -1,8 +1,10 @@
 import React from "react";
 
-export default function Transaksidetail() {
+export default function Transaksidetail({ className, onClick }) {
   return (
     <svg
+      className={className}
+      onClick={onClick}
       width="20"
       height="17"
       viewBox="0 0 20 17"

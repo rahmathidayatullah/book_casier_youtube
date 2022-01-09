@@ -62,7 +62,7 @@ export default function reducer(state = initialState, action) {
     case SORTIR_BY_KEYWORD:
       return {
         ...state,
-        keyword: statuslist.keyword,
+        keyword: action.keyword,
       };
     case CLEAR_STATE:
       return {
