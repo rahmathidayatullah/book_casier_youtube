@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import ImgLogin from "../../assets/img/sign.png";
 import { useForm } from "react-hook-form";
+import { createLogin } from "../../features/auth/actions";
+import { useNavigate } from "react-router-dom";
 export default function Index() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  console.log("auth", auth);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
-  console.log("form", form);
   const {
     register,
     handleSubmit,
@@ -23,8 +29,14 @@ export default function Index() {
   };
 
   const onSubmit = () => {
-    alert("berhasil login");
+    dispatch(createLogin(form));
   };
+
+  useEffect(() => {
+    if (auth.statusPost === "success") {
+      navigate("/dashboard");
+    }
+  }, [auth.statusPost]);
   return (
     <div className="grid grid-cols-5 h-screen">
       <div className="hidden 2xl:block 2xl:col-span-2">
