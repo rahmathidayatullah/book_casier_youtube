@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   BarChart,
   CartesianGrid,
@@ -16,7 +17,12 @@ import IconSearch from "../../assets/icon/search";
 import ImgProduct1 from "../../assets/img/listproduct/img1.png";
 import ImgEmptyCart from "../../assets/img/empty_cart.png";
 import IconDelete from "../../assets/icon/delete";
+import { fetchingAllDashboard } from "../../features/dashboard/actions";
+import { config } from "../../config";
 export default function Dashboard() {
+  const dispatch = useDispatch();
+  const dashboard = useSelector((state) => state.dashboard);
+  console.log("dashboard", dashboard);
   // state pie
   const [activeIndex, setActiveIndex] = useState(0);
   // func pie chart
@@ -144,6 +150,10 @@ export default function Dashboard() {
     );
   };
 
+  useEffect(() => {
+    dispatch(fetchingAllDashboard());
+  }, [dispatch]);
+
   return (
     <div>
       <div className="ml-32 mr-32 pt-9">
@@ -154,14 +164,14 @@ export default function Dashboard() {
             {/* chart bar */}
             <h2 className="text-xl ml-4 mt-4">Daily sales</h2>
             <div className="flex items-center justify-center h-full">
-              <BarChart width={730} height={250} data={dataBar}>
+              <BarChart width={730} height={250} data={dashboard?.chart}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="x" />
                 <YAxis />
                 <Tooltip />
-                <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
+                {/* <Legend /> */}
+                <Bar dataKey="y" fill="#8884d8" />
+                {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
               </BarChart>
             </div>
           </div>
@@ -189,131 +199,46 @@ export default function Dashboard() {
         {/* best seller */}
         <h2 className="text-xl mt-16">Best Seller</h2>
         <div className="grid grid-cols-2 gap-5 mt-6">
-          <div className="col-span-2 lg:col-span-1">
-            <div className="shadow-1xl p-4 rounded-xl flex items-center relative">
-              {/* img box */}
-              <div className="min-w-78px w-78px h-103px overflow-hidden mr-4">
-                <img
-                  className="h-full w-full"
-                  src={ImgProduct1}
-                  alt="img-card"
-                />
-              </div>
-              {/* text */}
-              <div>
-                <p className="text-base font-bold">Faktor Lattes </p>
-                <p className="font-medium text-gray-500 text-sm mt-1">$21.01</p>
-                <p className="font-medium text-green-mantis text-sm mt-8">
-                  0 Unit sold
-                </p>
-              </div>
+          {dashboard.status === "idle"
+            ? "idle"
+            : dashboard.status === "process"
+            ? "process"
+            : dashboard.status === "success" &&
+              !dashboard.data.bestProduct.length
+            ? "data kosong"
+            : dashboard.data.bestProduct.map((items, index) => {
+                return (
+                  <div className="col-span-2 lg:col-span-1">
+                    <div className="shadow-1xl p-4 rounded-xl flex items-center relative">
+                      {/* img box */}
+                      <div className="min-w-78px w-78px h-103px overflow-hidden mr-4">
+                        <img
+                          className="h-full w-full"
+                          src={config.api_image + items.coverImage}
+                          alt={`img-card${index}`}
+                        />
+                      </div>
+                      {/* text */}
+                      <div>
+                        <p className="text-base font-bold">
+                          {items.titleProduct}
+                        </p>
+                        <p className="font-medium text-gray-500 text-sm mt-1">
+                          ${items.priceProduct}
+                        </p>
+                        <p className="font-medium text-green-mantis text-sm mt-8">
+                          {items.total_quantity} Unit sold
+                        </p>
+                      </div>
 
-              {/* icon delete */}
-              <p className="absolute cursor-pointer top-5 right-5 px-5 py-1 bg-orange-pumpkin text-white font-medium text-lg rounded-md">
-                Top 1
-              </p>
-            </div>
-          </div>
-          <div className="col-span-2 lg:col-span-1">
-            <div className="shadow-1xl p-4 rounded-xl flex items-center relative">
-              {/* img box */}
-              <div className="min-w-78px w-78px h-103px overflow-hidden mr-4">
-                <img
-                  className="h-full w-full"
-                  src={ImgProduct1}
-                  alt="img-card"
-                />
-              </div>
-              {/* text */}
-              <div>
-                <p className="text-base font-bold">Faktor Lattes </p>
-                <p className="font-medium text-gray-500 text-sm mt-1">$21.01</p>
-                <p className="font-medium text-green-mantis text-sm mt-8">
-                  0 Unit sold
-                </p>
-              </div>
-
-              {/* icon delete */}
-              <p className="absolute cursor-pointer top-5 right-5 px-5 py-1 bg-orange-pumpkin text-white font-medium text-lg rounded-md">
-                Top 1
-              </p>
-            </div>
-          </div>
-          <div className="col-span-2 lg:col-span-1">
-            <div className="shadow-1xl p-4 rounded-xl flex items-center relative">
-              {/* img box */}
-              <div className="min-w-78px w-78px h-103px overflow-hidden mr-4">
-                <img
-                  className="h-full w-full"
-                  src={ImgProduct1}
-                  alt="img-card"
-                />
-              </div>
-              {/* text */}
-              <div>
-                <p className="text-base font-bold">Faktor Lattes </p>
-                <p className="font-medium text-gray-500 text-sm mt-1">$21.01</p>
-                <p className="font-medium text-green-mantis text-sm mt-8">
-                  0 Unit sold
-                </p>
-              </div>
-
-              {/* icon delete */}
-              <p className="absolute cursor-pointer top-5 right-5 px-5 py-1 bg-orange-pumpkin text-white font-medium text-lg rounded-md">
-                Top 1
-              </p>
-            </div>
-          </div>
-          <div className="col-span-2 lg:col-span-1">
-            <div className="shadow-1xl p-4 rounded-xl flex items-center relative">
-              {/* img box */}
-              <div className="min-w-78px w-78px h-103px overflow-hidden mr-4">
-                <img
-                  className="h-full w-full"
-                  src={ImgProduct1}
-                  alt="img-card"
-                />
-              </div>
-              {/* text */}
-              <div>
-                <p className="text-base font-bold">Faktor Lattes </p>
-                <p className="font-medium text-gray-500 text-sm mt-1">$21.01</p>
-                <p className="font-medium text-green-mantis text-sm mt-8">
-                  0 Unit sold
-                </p>
-              </div>
-
-              {/* icon delete */}
-              <p className="absolute cursor-pointer top-5 right-5 px-5 py-1 bg-orange-pumpkin text-white font-medium text-lg rounded-md">
-                Top 1
-              </p>
-            </div>
-          </div>
-          <div className="col-span-2 lg:col-span-1">
-            <div className="shadow-1xl p-4 rounded-xl flex items-center relative">
-              {/* img box */}
-              <div className="min-w-78px w-78px h-103px overflow-hidden mr-4">
-                <img
-                  className="h-full w-full"
-                  src={ImgProduct1}
-                  alt="img-card"
-                />
-              </div>
-              {/* text */}
-              <div>
-                <p className="text-base font-bold">Faktor Lattes </p>
-                <p className="font-medium text-gray-500 text-sm mt-1">$21.01</p>
-                <p className="font-medium text-green-mantis text-sm mt-8">
-                  0 Unit sold
-                </p>
-              </div>
-
-              {/* icon delete */}
-              <p className="absolute cursor-pointer top-5 right-5 px-5 py-1 bg-orange-pumpkin text-white font-medium text-lg rounded-md">
-                Top 1
-              </p>
-            </div>
-          </div>
+                      {/* icon delete */}
+                      <p className="absolute cursor-pointer top-5 right-5 px-5 py-1 bg-orange-pumpkin text-white font-medium text-lg rounded-md">
+                        Top {index + 1}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
         </div>
       </div>
     </div>
