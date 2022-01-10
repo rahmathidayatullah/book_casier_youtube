@@ -164,7 +164,7 @@ export default function Dashboard() {
             {/* chart bar */}
             <h2 className="text-xl ml-4 mt-4">Daily sales</h2>
             <div className="flex items-center justify-center h-full">
-              <BarChart width={730} height={250} data={dashboard?.chart}>
+              <BarChart width={730} height={250} data={dashboard?.data.chart}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="x" />
                 <YAxis />
@@ -183,7 +183,7 @@ export default function Dashboard() {
                 <Pie
                   activeIndex={activeIndex}
                   activeShape={renderActiveShape}
-                  data={dataPie}
+                  data={dashboard?.data?.bestMonth}
                   cx="50%"
                   cy="50%"
                   innerRadius={60}
