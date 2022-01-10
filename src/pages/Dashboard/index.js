@@ -105,7 +105,7 @@ export default function Dashboard() {
     return (
       <g>
         <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
-          {payload.name}
+          {payload.titleProduct}
         </text>
         <Sector
           cx={cx}
@@ -136,7 +136,7 @@ export default function Dashboard() {
           y={ey}
           textAnchor={textAnchor}
           fill="#333"
-        >{`PV ${value}`}</text>
+        >{`priceProduct ${value}`}</text>
         <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
           y={ey}
@@ -189,7 +189,7 @@ export default function Dashboard() {
                   innerRadius={60}
                   outerRadius={80}
                   fill="#8884d8"
-                  dataKey="value"
+                  dataKey="priceProduct"
                   onMouseEnter={onPieEnter}
                 />
               </PieChart>
