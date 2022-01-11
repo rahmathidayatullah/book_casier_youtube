@@ -4,6 +4,7 @@ import ImgLogin from "../../assets/img/sign.png";
 import { useForm } from "react-hook-form";
 import { createLogin } from "../../features/auth/actions";
 import { useNavigate } from "react-router-dom";
+import { CLEAR_STATUS } from "../../features/auth/constants";
 export default function Index() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,6 +36,13 @@ export default function Index() {
   useEffect(() => {
     if (auth.statusPost === "success") {
       navigate("/dashboard");
+    }
+    if (auth.statusPost === "error") {
+      // navigate("/dashboard");
+      alert("password atau email anda salah");
+      dispatch({
+        type: CLEAR_STATUS,
+      });
     }
   }, [auth.statusPost]);
   return (
