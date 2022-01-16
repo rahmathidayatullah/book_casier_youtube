@@ -160,7 +160,7 @@ export default function Dashboard() {
         <h2 className="text-xl">Dashboard</h2>
         {/* chart */}
         <div className="grid grid-cols-7 mt-7 gap-5">
-          <div className="col-span-7 2xl:col-span-4 shadow-1xl rounded-xl">
+          <div className="col-span-7 2xl:col-span-4 shadow-1xl rounded-xl pb-10">
             {/* chart bar */}
             <h2 className="text-xl ml-4 mt-4">Daily sales</h2>
             <div className="flex items-center justify-center h-full">

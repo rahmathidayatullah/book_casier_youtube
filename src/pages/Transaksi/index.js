@@ -39,12 +39,12 @@ export default function Transaksi() {
   return (
     <div>
       <div className="ml-32 grid grid-cols-5">
-        <div className="col-span-5 2xl:col-span-3">
-          <div className="h-full 2xl:h-screen pt-9 overflow-scroll px-5">
+        <div className="col-span-5 lg:col-span-3">
+          <div className="h-full lg:h-screen pt-9 overflow-scroll px-5 pb-10">
             <h2 className="text-xl">Transaction </h2>
             {/* ketika data category kosong */}
             {/* <div>
-              <div className="flex flex-col items-center justify-center h-full 2xl:h-80vh">
+              <div className="flex flex-col items-center justify-center h-full lg:h-80vh">
                 <img src={ImgCategory} alt="category-empty" />
                 <p className="font-medium text-xl mt-2 text-violet-purple">
                   Transaksi is Empty!
@@ -108,14 +108,14 @@ export default function Transaksi() {
             </div>
           </div>
         </div>
-        <div className="col-span-5 2xl:col-span-2">
-          <div className="h-full 2xl:h-screen pt-9 xl:overflow-scroll mx-7 relative">
+        <div className="col-span-5 lg:col-span-2">
+          <div className="h-full lg:h-screen pt-9 xl:overflow-scroll mx-7 relative">
             <h2 className="font-bold">
               Codeathome <span className="font-normal">BookStore</span>
             </h2>
             {/* start ketika data kosong */}
             <div
-              className={`flex flex-col h-full 2xl:h-69vh overflow-scroll mt-10 px-5`}
+              className={`flex flex-col h-full lg:h-69vh overflow-scroll mt-10 px-5`}
             >
               <p className="text-base">Detail transaction</p>
               {!transaction.dataSingle.length ? (
@@ -187,7 +187,7 @@ export default function Transaksi() {
 
             {/* btn action */}
 
-            {/* <div className="static 2xl:absolute bottom-0 w-full">
+            {/* <div className="static lg:absolute bottom-0 w-full">
               <button className="flex items-center justify-center mt-4 bg-soft-purple p-5 text-white w-full rounded-xl">
                 <p className="font-bold">Submit</p>
               </button>

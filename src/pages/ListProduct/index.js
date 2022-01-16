@@ -84,8 +84,8 @@ export default function ListProduct() {
     <div>
       <NotifSukses name="Checkout" text="transaction" show={notif.sukses} />
       <div className="ml-32 grid grid-cols-5">
-        <div className="col-span-5 2xl:col-span-3">
-          <div className="h-full 2xl:h-screen pt-9 overflow-scroll px-5">
+        <div className="col-span-5 xl:col-span-3">
+          <div className="h-full xl:h-screen pt-9 overflow-scroll px-5">
             {/* category */}
             <div>
               <ul className="flex items-center overflow-scroll">
@@ -130,7 +130,7 @@ export default function ListProduct() {
               <IconSearch className="absolute right-4 top-1/2 transform -translate-y-1/2" />
             </div>
             {/* list card */}
-            <div className="grid grid-cols-6 mt-8 gap-5">
+            <div className="grid grid-cols-6 mt-8 gap-5 pb-10">
               {/* item card */}
               {manageProduct.status === "idle" ? (
                 "idle"
@@ -140,7 +140,7 @@ export default function ListProduct() {
                 !manageProduct.data
                   .length /* ketika data product buku kosong */ ? (
                 <div>
-                  <div className="flex flex-col items-center justify-center h-full 2xl:h-80vh">
+                  <div className="flex flex-col items-center justify-center h-full xl:h-80vh">
                     <img src={ImgCategory} alt="category-empty" />
                     <p className="font-medium text-xl mt-2 text-violet-purple">
                       Book is Empty!
@@ -197,8 +197,8 @@ export default function ListProduct() {
             </div>
           </div>
         </div>
-        <div className="col-span-5 2xl:col-span-2">
-          <div className="h-full 2xl:h-screen pt-9 xl:overflow-scroll mx-7 relative">
+        <div className="col-span-5 xl:col-span-2">
+          <div className="h-full xl:h-screen pt-9 xl:overflow-scroll mx-7 relative">
             <div className="flex items-center justify-between">
               <h2 className="font-bold">
                 Codeathome <span className="font-normal">BookStore</span>
@@ -211,9 +211,7 @@ export default function ListProduct() {
               </span>
             </div>
             {/* start ketika data kosong */}
-            <div
-              className={`flex h-full 2xl:h-69vh overflow-scroll mt-10 px-3`}
-            >
+            <div className={`flex h-full xl:h-69vh overflow-scroll mt-10 px-3`}>
               {/* <div
               className={`flex items-center justify-center border h-69vh overflow-scroll mt-10`}
             > */}
@@ -286,7 +284,7 @@ export default function ListProduct() {
 
             {/* btn action */}
 
-            <div className="static 2xl:absolute bottom-0 w-full">
+            <div className="static xl:absolute bottom-0 w-full">
               <div className="flex items-center justify-between bg-gray-culture rounded-xl p-5 text-white">
                 <p className="font-bold">Total payment</p>
                 <p className="">

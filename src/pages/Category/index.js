@@ -130,8 +130,8 @@ export default function Category() {
         onClick={() => handleDeleteApi()}
       />
       <div className="ml-32 grid grid-cols-5">
-        <div className="col-span-5 2xl:col-span-3">
-          <div className="h-full 2xl:h-screen pt-9 overflow-scroll px-3">
+        <div className="col-span-5 lg:col-span-3">
+          <div className="h-full lg:h-screen pt-9 overflow-scroll px-3 pb-10">
             <h2 className="text-xl">Category Managment</h2>
 
             <div>
@@ -157,7 +157,7 @@ export default function Category() {
                   !categories.data.length ? (
                   /* ketika data category kosong */
                   <div>
-                    <div className="flex flex-col items-center justify-center h-full 2xl:h-80vh">
+                    <div className="flex flex-col items-center justify-center h-full lg:h-80vh">
                       <img src={ImgCategory} alt="category-empty" />
                       <p className="font-medium text-xl mt-2 text-violet-purple">
                         Category is Empty!
@@ -197,20 +197,20 @@ export default function Category() {
             </div>
           </div>
         </div>
-        <div className="col-span-5 2xl:col-span-2">
-          <div className="h-full 2xl:h-screen pt-9 xl:overflow-scroll mx-7 relative">
+        <div className="col-span-5 lg:col-span-2">
+          <div className="h-full lg:h-screen pt-9 xl:overflow-scroll mx-7 relative">
             <h2 className="font-bold">
               Codeathome <span className="font-normal">BookStore</span>
             </h2>
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* start ketika data kosong */}
-              <div className={`flex h-full 2xl:h-69vh overflow-scroll mt-10`}>
+              <div className={`flex h-full lg:h-69vh overflow-scroll mt-10`}>
                 {/* <div
               className={`flex items-center justify-center border h-69vh overflow-scroll mt-10`}
             > */}
                 {/* img empty cart */}
                 {/* <img src={ImgEmptyCart} alt="img-empty-cart" /> */}
-                <ul className="w-full px-3">
+                <ul className="w-full px-3 pb-10">
                   <li className="mt-5">
                     <input
                       {...register("name", {
@@ -235,7 +235,7 @@ export default function Category() {
 
               {/* btn action */}
 
-              <div className="static 2xl:absolute bottom-0 w-full">
+              <div className="static lg:absolute bottom-0 w-full">
                 <button
                   type="submit"
                   className={`flex items-center justify-center mt-4 bg-soft-purple p-5 text-white w-full rounded-xl ${

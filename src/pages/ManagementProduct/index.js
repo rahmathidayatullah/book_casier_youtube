@@ -222,7 +222,7 @@ export default function ManagementProduct() {
                 <IconSearch className="absolute right-4 top-1/2 transform -translate-y-1/2" />
               </div>
 
-              <ul className="mt-8">
+              <ul className="mt-8 pb-10">
                 {manageProduct.status === "idle" ? (
                   "idle"
                 ) : manageProduct.status === "process" ? (
@@ -307,7 +307,7 @@ export default function ManagementProduct() {
             > */}
                 {/* img empty cart */}
                 {/* <img src={ImgEmptyCart} alt="img-empty-cart" /> */}
-                <ul className="w-full px-5">
+                <ul className="w-full px-5 pb-10">
                   <li className="mt-5">
                     <div className="shadow-1xl p-4 rounded-xl flex flex-col items-center relative justify-center cursor-pointer">
                       <input
@@ -460,7 +460,7 @@ export default function ManagementProduct() {
                       </p>
                     )}
                   </li>
-                  <li className="mt-5">
+                  <li className="mt-5 pb-10">
                     <input
                       {...register("stock", {
                         required: "stock tidak boleh kosong",
