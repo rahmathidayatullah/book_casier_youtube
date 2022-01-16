@@ -5,7 +5,6 @@ import IconEdit from "../../assets/icon/edit";
 import ImgCategory from "../../assets/img/empty_Category.png";
 import ImgBook from "../../assets/img/img_book.png";
 import { useForm } from "react-hook-form";
-import ImgProduct1 from "../../assets/img/listproduct/img1.png";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCategory } from "../../features/category/actions";
 import {
@@ -30,8 +29,6 @@ export default function ManagementProduct() {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
   const manageProduct = useSelector((state) => state.manageProduct);
-  // console.log("categories", categories);
-  console.log("manageProduct", manageProduct);
   const [statusUpdate, setStatusUpdate] = useState(false);
   const [productData, setProductData] = useState({
     name: "",
@@ -43,7 +40,6 @@ export default function ManagementProduct() {
     dispatch(searchByKeyword(value));
   };
   const [imageFile, setImageFile] = useState("");
-  console.log("imageFile", imageFile);
   const [form, setForm] = useState({
     title: "",
     auhtor: "",
@@ -54,12 +50,9 @@ export default function ManagementProduct() {
     category: "",
   });
 
-  console.log("form", form);
-  // console.log("imageFile", imageFile);
   const {
     register,
     handleSubmit,
-    watch,
     clearErrors,
     reset,
     formState: { errors },
@@ -302,21 +295,12 @@ export default function ManagementProduct() {
             {/* start ketika data kosong */}
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className={`flex h-full 2xl:h-78vh overflow-scroll mt-10`}>
-                {/* <div
-              className={`flex items-center justify-center border h-69vh overflow-scroll mt-10`}
-            > */}
-                {/* img empty cart */}
-                {/* <img src={ImgEmptyCart} alt="img-empty-cart" /> */}
                 <ul className="w-full px-5 pb-10">
                   <li className="mt-5">
                     <div className="shadow-1xl p-4 rounded-xl flex flex-col items-center relative justify-center cursor-pointer">
                       <input
-                        // {...register("cover", {
-                        //   required: "cover image tidak boleh kosong",
-                        // })}
                         onChange={handleChange}
                         name="cover"
-                        // value={form?.cover}
                         type="file"
                         className="absolute w-full h-full cursor-pointer opacity-0"
                         accept="image/*"
@@ -357,11 +341,6 @@ export default function ManagementProduct() {
                         </div>
                       )}
                     </div>
-                    {/* {errors.cover && (
-                      <p className="mt-2 text-red-dragon">
-                        {errors.cover.message}
-                      </p>
-                    )} */}
                   </li>
                   <li className="mt-5">
                     <input

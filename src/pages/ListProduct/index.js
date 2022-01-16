@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import IconSearch from "../../assets/icon/search";
-import ImgProduct1 from "../../assets/img/listproduct/img1.png";
 import ImgEmptyCart from "../../assets/img/empty_cart.png";
 import IconDelete from "../../assets/icon/delete";
 import {
@@ -34,9 +33,6 @@ export default function ListProduct() {
   const manageProduct = useSelector((state) => state.manageProduct);
   const categories = useSelector((state) => state.categories);
   const listProductCheckout = useSelector((state) => state.listProductCheckout);
-  // console.log("page listProductCheckout", listProductCheckout);
-  // console.log("manageProduct page list product", manageProduct);
-  console.log("manageProduct page list categories", categories);
   const dispatch = useDispatch();
 
   const [keyword, setKeyword] = useState("");
@@ -46,13 +42,10 @@ export default function ListProduct() {
   };
 
   const handleAddProductToCart = (data) => {
-    // console.log("function pages data", data);
-
     dispatch(addProductToCart({ ...data, quantity: 1 }));
   };
 
   const handleSortirByCategory = (id) => {
-    console.log("id", id);
     dispatch(searchByCategory(id));
     dispatch(activeSelectCategory(id));
   };
@@ -89,10 +82,6 @@ export default function ListProduct() {
             {/* category */}
             <div>
               <ul className="flex items-center overflow-scroll">
-                {/* <li className="cursor-pointer">
-                  <div className="text-base pb-3 whitespace-nowrap">All</div>
-                  <div className="w-full bg-violet-purple h-2 rounded-xl"></div>
-                </li> */}
                 {categories?.dataForListCategory?.map((items, index) => {
                   return (
                     <li
@@ -212,11 +201,6 @@ export default function ListProduct() {
             </div>
             {/* start ketika data kosong */}
             <div className={`flex h-full xl:h-69vh overflow-scroll mt-10 px-3`}>
-              {/* <div
-              className={`flex items-center justify-center border h-69vh overflow-scroll mt-10`}
-            > */}
-              {/* img empty cart */}
-
               <ul className="w-full">
                 {!listProductCheckout.data.length ? (
                   <div className="flex items-center justify-center pt-20">

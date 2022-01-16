@@ -49,7 +49,6 @@ export const fetchAllProduct = () => {
       let {
         data: { data },
       } = await debouncedFetchProduct(params);
-      // console.log("response fetching all product", data);
       dispatch({
         type: SUCCESS_FETCH_PRODUCT,
         data,

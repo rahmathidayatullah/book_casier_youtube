@@ -6,10 +6,9 @@ import IconBookManagement from "../assets/icon/bookManagement";
 import IconListProduct from "../assets/icon/listProduct";
 import IconLogout from "../assets/icon/logout";
 import IconTransaksi from "../assets/icon/transaksi";
-import { Navigate, NavLink, useNavigate } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 export default function Layout({ children }) {
   let auth = localStorage.getItem("auth");
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("auth");
@@ -105,9 +104,7 @@ export default function Layout({ children }) {
         {/* icon casier */}
         <div className="absolute bottom-9 left-1/2 -translate-x-1/2">
           <button onClick={handleLogout}>
-            {/* <NavLink to={"/"}> */}
             <IconLogout />
-            {/* </NavLink> */}
           </button>
         </div>
       </div>

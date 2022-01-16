@@ -13,7 +13,6 @@ import { postTransaction } from "../../api/cartCheckout";
 export const checkoutCart = () => {
   return async (dispatch, getState) => {
     let dataCart = getState().listProductCheckout.data;
-    console.log("dataCart", dataCart);
 
     let dataSend = dataCart.map((items) => {
       return { productId: items.id, quantity: items.quantity };
@@ -118,7 +117,6 @@ export const plusItemCart = (id) => {
     tempCart.forEach((items) => {
       if (items.id === id) {
         if (items.quantity === items.stock) {
-          // items.quantity = items.quantity + 0;
           alert("Stock tidak cukup");
         } else {
           items.quantity = items.quantity + 1;

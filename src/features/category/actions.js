@@ -180,8 +180,6 @@ export const activeSelectCategory = (id) => {
       }
     });
 
-    console.log("dataCategoryListProduct", dataCategoryListProduct);
-
     dispatch({
       type: ACTIVE_CATEGORYLIST,
       dataCategoryListProduct,

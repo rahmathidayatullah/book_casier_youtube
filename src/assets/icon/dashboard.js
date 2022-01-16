@@ -16,7 +16,3 @@ export default function Dashboard() {
     </svg>
   );
 }
-
-// Dashboard.defaultProps = {
-//   fill: "#6C63FF",
-// };

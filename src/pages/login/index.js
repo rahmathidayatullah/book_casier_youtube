@@ -9,7 +9,6 @@ export default function Index() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  console.log("auth", auth);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -18,7 +17,6 @@ export default function Index() {
   const {
     register,
     handleSubmit,
-    watch,
     clearErrors,
     formState: { errors },
   } = useForm();
@@ -38,7 +36,6 @@ export default function Index() {
       navigate("/dashboard");
     }
     if (auth.statusPost === "error") {
-      // navigate("/dashboard");
       alert("password atau email anda salah");
       dispatch({
         type: CLEAR_STATUS,
@@ -101,11 +98,6 @@ export default function Index() {
                   </p>
                 )}
                 <button
-                  // disabled={
-                  //   Object.values(form).every((value) => value !== "")
-                  //     ? false
-                  //     : true
-                  // }
                   type="submit"
                   className={`py-4 px-6 text-base font-bold rounded-lg shadow-1xl text-white mt-12 ${
                     Object.values(form).every((value) => value !== "")

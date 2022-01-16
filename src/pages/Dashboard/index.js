@@ -6,76 +6,22 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   Bar,
-  ResponsiveContainer,
   PieChart,
   Pie,
   Sector,
 } from "recharts";
-import IconSearch from "../../assets/icon/search";
-import ImgProduct1 from "../../assets/img/listproduct/img1.png";
-import ImgEmptyCart from "../../assets/img/empty_cart.png";
-import IconDelete from "../../assets/icon/delete";
 import { fetchingAllDashboard } from "../../features/dashboard/actions";
 import { config } from "../../config";
 export default function Dashboard() {
   const dispatch = useDispatch();
   const dashboard = useSelector((state) => state.dashboard);
-  console.log("dashboard", dashboard);
   // state pie
   const [activeIndex, setActiveIndex] = useState(0);
   // func pie chart
   const onPieEnter = (_, index) => {
-    // this.setState({
-    //   activeIndex: index,
-    // });
     setActiveIndex(index);
   };
-  const dataBar = [
-    {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-    },
-    {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-    },
-    {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-    },
-    {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-    },
-    {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-    },
-    {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-    },
-  ];
-
-  const dataPie = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-  ];
 
   const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180;
@@ -169,9 +115,7 @@ export default function Dashboard() {
                 <XAxis dataKey="x" />
                 <YAxis />
                 <Tooltip />
-                {/* <Legend /> */}
                 <Bar dataKey="y" fill="#8884d8" />
-                {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
               </BarChart>
             </div>
           </div>

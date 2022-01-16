@@ -16,8 +16,6 @@ export const fetchingAllDashboard = () => {
         data: { data },
       } = await getAllDashboard();
 
-      console.log("data action", data);
-
       dispatch({
         type: SUCCESS_FETCHING_DASHBOARD,
         data,

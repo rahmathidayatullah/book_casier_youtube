@@ -34,7 +34,6 @@ export default function Category() {
   const {
     register,
     handleSubmit,
-    watch,
     clearErrors,
     reset,
     formState: { errors },
@@ -205,11 +204,6 @@ export default function Category() {
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* start ketika data kosong */}
               <div className={`flex h-full lg:h-69vh overflow-scroll mt-10`}>
-                {/* <div
-              className={`flex items-center justify-center border h-69vh overflow-scroll mt-10`}
-            > */}
-                {/* img empty cart */}
-                {/* <img src={ImgEmptyCart} alt="img-empty-cart" /> */}
                 <ul className="w-full px-3 pb-10">
                   <li className="mt-5">
                     <input
